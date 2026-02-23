@@ -39,6 +39,13 @@ class Person{
          */
         std::string getFullName();
 
+        /**
+         * @brief this functions return all the person data
+         * 
+         * @return a string of all data
+         */
+        std::string getFullData();
+
 
         /** SETTERS **/
 

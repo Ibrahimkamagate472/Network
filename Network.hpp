@@ -15,6 +15,14 @@ class Network{
         Person* current_person_;
         Person* person_;
         Person* friend_;
+        /**
+         * @brief this function list out all duplicates
+         * 
+         * @param a pointer to a Person 
+         * 
+         * @return a pointer to a Person
+         */
+        Person* listDuplicate(Person* person_);
 
 
     public:
@@ -41,7 +49,16 @@ class Network{
      * @brief this functions handles if there are duplicate 
      */
     void addDuplicate(Person* duplicate_person_);
+    /**
+     * @brief this function checks if the person a is our duplicate list 
+     * 
+     * @param pointer a person that is being checked for duplicates 
+     * 
+     * returns true or false if there are duplicates
+     */
+    bool duplicateChecker(Person* person_);
     bool removeDuplicate();
+    
 
     void duplicateHandler(const std::string& duplicateName);
 

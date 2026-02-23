@@ -34,6 +34,15 @@ std::string Person::getFullName(){
     return first_name_ + " " + last_name_;
 }
 
+/**
+ * @brief this functions return all the person data
+ * 
+ * @return a string of all data
+ */
+std::string Person::getFullData(){
+    return "Name: " + first_name_ + " " + last_name_ + "\n School: " + school_
+    + "\nField: " + field_;
+}
 
 /** SETTERS **/
 
