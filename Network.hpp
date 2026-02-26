@@ -15,57 +15,65 @@ class Network{
         Person* current_person_;
         Person* person_;
         Person* friend_;
-        /**
-         * @brief this function list out all duplicates
-         * 
-         * @param a pointer to a Person 
-         * 
-         * @return a pointer to a Person
-         */
-        Person* listDuplicate(Person* person_);
-
-
     public:
+    /** BASIC FUNCTIONS **/
 
     /**
-     * @brief this function checks in our network if a person is in it or not
+     * @brief functions looks through our network for a person
      * 
-     * @param const reference to a string of the persons first name 
-     * @param const reference to a string of the persons last name 
+     * @param const reference to a string of the first name 
+     * @param const reference to a string of the last name 
      * 
-     * @return true or false if we were able find the person or not
+     * @return a pointer to the person
      */
     Person* lookUp(const std::string& first_name_, const std::string& last_name_);
+
     /**
-     * @brief this function sets the currernt person we are using, if the exist 
+     * @brief function sets the currerent person
      * 
-     * @param const reference to a string of the persons first name 
-     * @param const reference to a string of the persons last name 
+     * @param const reference to a string of the first name 
+     * @param const reference to a string of the last nmae
      * 
+     * @return true or flase if done
      */
     bool setCurrentPerson(const std::string& first_name_, const std::string& last_name_);
 
-    /**
-     * @brief this functions handles if there are duplicate 
-     */
-    void addDuplicate(Person* duplicate_person_);
-    /**
-     * @brief this function checks if the person a is our duplicate list 
-     * 
-     * @param pointer a person that is being checked for duplicates 
-     * 
-     * returns true or false if there are duplicates
-     */
-    bool duplicateChecker(Person* person_);
-    bool removeDuplicate();
+    /** PERSON SECTION **/
     
+    /**
+     * @brief function adds a person to the network
+     * 
+     * @param const reference to a string of the first name
+     * @param const reference to a string of the last name
+     * @param const reference to a string of the school
+     * @param const reference to a string of the field
+     * 
+     * @return true or false 
+     */
+    bool addPerson(std::string first_name_, std::string last_name_, std::string school_, std::string field_);
+   
+    /**
+     * @brief function removes a person from the network 
+     * 
+     * @return true or false 
+     */
+    bool removePerson();
 
-    void duplicateHandler(const std::string& duplicateName);
+    /** 
+     * @brief function changes a person names 
+     * 
+     * @param const reference to a string of the new first name
+     * @param const reference to a string of the new last name 
+     * 
+     * @return true or false
+    */
+    bool changePersonName(const std::string& new_first_name, const std::string& new_last_name);
+
 
     /* FRIENDS SECTION */
 
     /**
-     * @brief this functions adds a friend to the current preson that we are using 
+     * @brief functions adds a friend to the current preson that we are using 
      * 
      * @param const reference to a string of the friend we are adding first name
      * @param const reference to a string of the friend we are adding last name
@@ -76,12 +84,12 @@ class Network{
 
 
     /**
-     * @brief this function list out all the friends for a current person
+     * @brief function list out all the friends for a current person
      */
     void listFriends();
 
     /**
-     * @brief this function deletes a friend from a persons list 
+     * @brief function deletes a friend from a persons list 
      * 
      * @param const reference to a string of the person first name we want to remove
      * @param const reference to a string of the person last name we want to remove
@@ -93,18 +101,41 @@ class Network{
      */
     bool recomendFriend();
 
+    /** DUPLICATE HANDLER SECTION **/
 
-
-
-    
     /**
-     * @brief functions adds a new people to out network
+     * @brief function checks if the person a is our duplicate list 
      * 
+     * @param pointer to a person that is being checked for duplicates 
+     * 
+     * @returns true or false if there are duplicates
      */
-    bool addPerson(std::string first_name_, std::string last_name_, std::string school_, std::string field_);
-    bool removePerson();
-    bool changePersonName(const std::string& new_first_name, const std::string& new_last_name);
+    bool duplicateChecker(Person* dup_person_);
 
+    /**
+     * @brief function adds a duplicate person to the network
+     * 
+     * @param pointer to a person that is being added as a duplicate
+     * 
+     * @return true or false 
+     *
+     */
+    bool addDuplicate(Person* duplicate_person_);
 
+    /**
+     * @brief function removes a person that is a duplicate
+     * 
+     * @return true or false 
+     */
+    bool removeDuplicate();
+
+    /**
+     * @brief function list out all duplicates
+     * 
+     * @param pointer to a Person 
+     * 
+     * @return pointer to a Person
+     */
+    Person* listDuplicate(Person* dup_person_);
 };
 #endif
