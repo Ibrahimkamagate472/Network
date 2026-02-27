@@ -44,6 +44,33 @@ std::string Person::getFullData(){
     + "\nField: " + field_;
 }
 
+/**
+ * @brief function gets the school the person attend
+ * 
+ * @return a sting of the school
+ */
+std::string Person::getSchool(){
+    return school_;
+}
+
+/**
+ * @brief function get the field the person is in
+ * 
+ * @return a string of the field
+ */
+std::string Person::getField(){
+    return field_;
+}
+
+
+std::unordered_map<std::string, std::string> Person::getFriends(){
+    return friends_;
+}
+
+bool Person::inFriendsList(std::string friend_name_){
+
+}
+
 /** SETTERS **/
 
 /**

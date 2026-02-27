@@ -109,9 +109,11 @@ bool Network::removePerson(){
  * @return true or false
 */
 bool Network::changePersonName(const std::string& new_first_name, const std::string& new_last_name){
-    current_person_->changeFirstName(new_first_name);
-    current_person_->changeLastName(new_last_name);
-    return 1;
+    if(current_person_->changeFirstName(new_first_name) &&
+    current_person_->changeLastName(new_last_name)){
+        return 1;
+    }
+    return 0;
 }
 
 /** FRIENDS SECTION **/
@@ -156,6 +158,27 @@ bool Network::removeFriend(const std::string& remove_first, const std::string& r
 void Network::listFriends(){
     current_person_->friendsList();
     
+}
+
+/**
+ * @brief function recomends a new friend for the current person
+ */
+void Network::recomendFriend(){
+    //friends of friends
+    // for(const auto& friends_of_friends_: current_person_->getFriends()){
+    //     if(friends_of_friends_ )
+    // }
+    for(const auto& new_friend_ : network_){
+        if(new_friend_.second == current_person_){
+            continue;
+        }else{
+            if(new_friend_.second->getSchool() == current_person_->getSchool()){
+                std::cout << "\n" << new_friend_.second->getFullData();
+            }else if(new_friend_.second->getField() == current_person_->getField()){
+                std::cout << "\n" << new_friend_.second->getFullData();
+            }
+        }
+    }
 }
 
 /** DUPLICATE HANDLER SECTION **/

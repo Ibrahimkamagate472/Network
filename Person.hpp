@@ -46,6 +46,24 @@ class Person{
          */
         std::string getFullData();
 
+        /**
+         * @brief function gets the school the person attend
+         * 
+         * @return a sting of the school
+         */
+        std::string getSchool();
+
+        /**
+         * @brief function get the field the person is in
+         * 
+         * @return a string of the field
+         */
+        std::string getField();
+
+        std::unordered_map<std::string, std::string> getFriends();
+
+        bool inFriendsList(std::string friend_name_);
+
 
         /** SETTERS **/
 

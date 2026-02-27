@@ -97,9 +97,9 @@ class Network{
     bool removeFriend(const std::string& remove_first, const std::string& remove_last);
 
     /**
-     * 
+     * @brief function recomends a new friend for the current person
      */
-    bool recomendFriend();
+    void recomendFriend();
 
     /** DUPLICATE HANDLER SECTION **/
 
