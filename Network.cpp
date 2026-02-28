@@ -218,12 +218,16 @@ bool Network::addDuplicate(Person* duplicate_person_){
         //add them to the duplicate table and add the to the network with a slightly changed name
         duplicate_table_.insert({duplicate_person_->getFullName(), 2});
         network_.insert({"2" + duplicate_person_->getFullName(), duplicate_person_});
-        return;
+        return 1;
+    }else{
+        //if there is more than one person for that name then we increase the total by 1
+        int value_ = duplicate_table_[duplicate_person_->getFullName()] ++;
+        //convert the int to string and set the naming style the same for if its the first duplicate or 30th
+        network_.insert({std::to_string(value_) + duplicate_person_->getFullName(), duplicate_person_});
+        return 1;
     }
-    //if there is more than one person for that name then we increase the total by 1
-   int value_ = duplicate_table_[duplicate_person_->getFullName()] ++;
-   //convert the int to string and set the naming style the same for if its the first duplicate or 30th
-   network_.insert({std::to_string(value_) + duplicate_person_->getFullName(), duplicate_person_});
+    return 0;
+
 }
 
 /**
