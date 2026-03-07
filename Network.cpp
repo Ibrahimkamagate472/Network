@@ -50,6 +50,41 @@ Person* Network::lookUp(const std::string& first_name_, const std::string& last_
     return 1;
 }
 
+/**
+ * @brief function list everybody that is in the network
+ * 
+ */
+void Network::listEverybody(){
+    std::string list_;
+    if(network_.size() > 50){
+        std::cout << "\nThere is over 50 people in the network." <<
+        "\nAre you sure you want to see everyboydy";    
+        std::cin >> list_;
+        if(list_ == "yes" || list_ == "Yes"){
+            int i = 1;
+            for(const auto& list_person_ : network_){
+                std::cout << i << list_person_.second->getFullName() << std::endl;
+                i++;
+            }
+        }
+    }else{
+        int i = 1;
+        for(const auto& list_person_ : network_){
+            std::cout << i << list_person_.second->getFullName() << std::endl;
+            i++;
+        }
+
+    }
+    
+
+}
+
+/** 
+ * @brief function list the current size of network
+*/
+void Network::size(){
+    std::cout << "\nCurrent size of our Network is: " << network_.size(); 
+}
 
 /** PERSON **/
 
@@ -64,17 +99,15 @@ Person* Network::lookUp(const std::string& first_name_, const std::string& last_
  * @return true or false 
  */
 bool Network::addPerson(std::string first_name_, std::string last_name_, std::string school_, std::string field_){
-    Person* new_person = new Person (first_name_,last_name_,school_,field_, {});
+    Person* new_person = new Person (first_name_,last_name_, school_, field_, {});
 
     //calls duplicateChecker to see if there are duplicates 
     if(duplicateChecker(new_person)){
         if(addDuplicate(new_person)){
-            delete new_person;
             return 1;
         }
     }else{
-        network_.insert({new_person->getFullName(), new_person});
-        delete new_person;
+        network_[new_person->getFullName()] = new_person;
         return 1;
     }
     delete new_person;

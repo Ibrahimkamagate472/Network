@@ -140,15 +140,15 @@ bool Person::changeLastName(const std::string& last_){
 
 
 bool Person::friendAdd(Person* friend_search_){
-    //checks if they have anyfriends
-    if(friends_.empty()){
-        return 0 ;
-    }
     auto person_ = friends_.find(friend_search_->getFirstName());
 
+    //makes sure we not adding the same people over
     if(person_ == friends_.end()){
-       // friends_.insert(friend_search_->getFullName(), friend_search_->getFullName());
+       //friends_.insert(friend_search_->getFullName(), friend_search_->getFullName());
+       friends_[friend_search_->getFullName()] = friend_search_->getFullName();
+       return 1;
     }
+    return 0;
 }
 
 bool Person::friendRemove(Person* friend_search_){

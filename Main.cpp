@@ -5,19 +5,17 @@ std::string change_first_, change_last_, friend_first_, friend_last_;
 
 
 
-void setPerson(std::string indicator, Network world_){
+void setPerson(std::string indicator, Network& world_){
     if(indicator == "set"){
         std::cout << "Please enter in the person first name: ";
         std::cin >> first_name_;
         std::cout << "Please enter in the person last name: ";
         std::cin >> last_name_;
-        world_.setCurrentPerson(first_name_, last_name_);
     }else if (indicator == "remove"){
         std::cout << "Please enter in the person first name you want to remove: ";
         std::cin >> first_name_;
         std::cout << "Please enter in the person last name you want to remove: ";
         std::cin >> last_name_;
-        world_.setCurrentPerson(first_name_, last_name_);
     }else if(indicator == "change"){
         std::cout << "Please enter the first name of the person want to change: ";
         std::cin >> first_name_;
@@ -29,9 +27,9 @@ void setPerson(std::string indicator, Network world_){
         std::cout << "Please enter in the person last name: ";
         std::cin >> last_name_;
         std::cout << "Please enter the friend's first name to add: ";
-        std::cin >> first_name_;
+        std::cin >> friend_first_;
         std::cout << "Please enter the friend's last name to add: ";
-        std::cin >> last_name_;
+        std::cin >> friend_last_;
     }else if(indicator == "remove friend"){
         std::cout << "Please enter in the person first name: ";
         std::cin >> first_name_;
@@ -42,8 +40,9 @@ void setPerson(std::string indicator, Network world_){
         std::cout << "Please enter the friend's last name to remove: ";
         std::cin >> last_name_;
     }
+    world_.setCurrentPerson(first_name_, last_name_);
 }
-void addPerson(Network world_){
+void addPerson(Network& world_){
     std::cout << "Please enter in the person first name: ";
     std::cin >> first_name_;
     std::cout << "Please enter in the person last name: ";
@@ -60,13 +59,13 @@ void addPerson(Network world_){
     }
     std::cout << "There was an error adding " << first_name_ << " " << last_name_ << " to the world.";
 }
-void removePerson(Network world_){
+void removePerson(Network& world_){
     if(world_.removePerson()){
         std::cout << "You have successfully removed " << first_name_ << " " <<
         last_name_;
     }
 }
-void changeName(Network world_){
+void changeName(Network& world_){
     std::cout << "Please enter the new first name of the person want to change: ";
     std::cin >> change_first_;
     std::cout << "Please enter the new last name of the person want to change: ";
@@ -78,29 +77,31 @@ void changeName(Network world_){
         std::cout << "There was an error changing " << first_name_ << " " << last_name_ << ".";
     }
 }
-void listFriends(Network world_){
+void listFriends(Network& world_){
     std::cout << first_name_ << " " << last_name_ << " friends are: ";
     world_.listFriends();
 }
-void addFriend(Network world_){
-    if(world_.addFriend(first_name_,friend_last_)){
-        std::cout << "You have successfully added " << friend_first_ << " " << last_name_ <<
+void addFriend(Network& world_){
+    if(world_.addFriend(friend_first_,friend_last_)){
+        std::cout << "You have successfully added " << friend_first_ << " " << friend_last_ <<
         " as a friend!";
         return;
     }
     std::cout << "There was an error adding " << friend_first_ << " " << friend_last_ << ".";
 }
-void removeFriend(Network world_){
+void removeFriend(Network& world_){
     if(world_.removeFriend(friend_first_, friend_last_)){
         std::cout << " You have successfully removed " << friend_first_ << " " << friend_last_ << ".";
         return;
     }
     std::cout << "There was an error unfriend " << first_name_ << " " << friend_last_ << ".";
 }
-void friendRecommendation(Network world_){
+void friendRecommendation(Network& world_){
 
 }
-
+void listPeople(Network& world_){
+    world_.listEverybody();
+}
 
 
 int main(){
@@ -110,10 +111,10 @@ int main(){
     std::cout << "Welcome to Network!\n Our goal is to connect the world!\n";
     std::cout << "Please enter the number that correspond with the option you want.\n" 
     << "1. Set Currenet Person \n2. Add Person\n3. Remove Person\n4. Change Name\n5. List Friends\n6. Add Friend\n7. Remove Friend" 
-    << "\n8. Friend Recommendation\n9. Close Program\n";
+    << "\n8. Friend Recommendation\nList Everybody\n10. Close Program\n";
     std::cin >> option_;
 
-    while(option_ != 8){
+    while(option_ != 11){
         switch (option_)
         {
             case 1:
@@ -144,19 +145,30 @@ int main(){
                 /** ADD FRIEND **/
                 setPerson("add friend", world_);
                 addFriend(world_);
-
+                break;
             case 7:
                 /** REMOVE FRIEND**/
                 setPerson("remove friend", world_);
+                break;
             case 8:
-                /**FRIEND RECOMMENDATION**/
+                /** FRIEND RECOMMENDATION **/
+                break;
+            case 9:
+                /** LIST EVERYBODY **/
+                listPeople(world_);
+                std::cout << "hi";
+                break;
+            case 10:
+                /** CURRENT SIZE **/
+                world_.size();
+                break;
             default:
                 std::cout << "That was an invalid input";
                 break;
         }
-        std::cout << "\n\nPlease enter the number that correspond with the option you want.\n" 
-        << "1. Set Currenet Person 1. Add Person\n2. Remove Person\n3. Change Name\n4. List Friends\n5. Add Friend\n6. Remove Friend" 
-        << "\n7. Friend Recommendation\n8. Close Program\n";
+        std::cout << "Please enter the number that correspond with the option you want.\n" 
+        << "1. Set Currenet Person \n2. Add Person\n3. Remove Person\n4. Change Name\n5. List Friends\n6. Add Friend\n7. Remove Friend" 
+        << "\n8. Friend Recommendation\n9. List Everybody\n10. Close Program\n";
         std::cin >> option_;
     }
 }

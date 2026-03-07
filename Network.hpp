@@ -38,6 +38,17 @@ class Network{
      */
     bool setCurrentPerson(const std::string& first_name_, const std::string& last_name_);
 
+    /**
+     * @brief function list everybody that is in the network
+     * 
+     */
+    void listEverybody();
+
+    /** 
+     * @brief function list the current size of network
+    */
+    void size();
+
     /** PERSON SECTION **/
     
     /**
