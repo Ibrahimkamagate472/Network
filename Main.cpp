@@ -5,42 +5,30 @@ std::string change_first_, change_last_, friend_first_, friend_last_;
 
 
 
-void setPerson(std::string indicator, Network& world_){
-    if(indicator == "set"){
-        std::cout << "Please enter in the person first name: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter in the person last name: ";
-        std::cin >> last_name_;
-    }else if (indicator == "remove"){
-        std::cout << "Please enter in the person first name you want to remove: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter in the person last name you want to remove: ";
-        std::cin >> last_name_;
-    }else if(indicator == "change"){
-        std::cout << "Please enter the first name of the person want to change: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter the last name of the person want to change: ";
-        std::cin >> last_name_;
-    }else if("add friend"){
-        std::cout << "Please enter in the person first name: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter in the person last name: ";
-        std::cin >> last_name_;
-        std::cout << "Please enter the friend's first name to add: ";
-        std::cin >> friend_first_;
-        std::cout << "Please enter the friend's last name to add: ";
-        std::cin >> friend_last_;
-    }else if(indicator == "remove friend"){
-        std::cout << "Please enter in the person first name: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter in the person last name: ";
-        std::cin >> last_name_;
-        std::cout << "Please enter the friend's first name to remove: ";
-        std::cin >> first_name_;
-        std::cout << "Please enter the friend's last name to remove: ";
-        std::cin >> last_name_;
+void setPerson(int indicator_, Network& world_){
+    std::string fragment_ = ":";
+    switch (indicator_)
+    {
+    //remove 
+    case 1:
+        fragment_ = " to remove: ";
+        break;
+
+    //change
+    case 2:
+        fragment_ = " to change: ";
+        break;
+    default:
+        break;
     }
-    world_.setCurrentPerson(first_name_, last_name_);
+
+    std::cout << "Please enter the first name of the person" << fragment_;
+    std::cin >> first_name_;
+    std::cout << "Please enter the last name of the person" << fragment_;
+    std::cin >> last_name_;
+
+    world_.setCurrentPerson(first_name_,last_name_);
+
 }
 void addPerson(Network& world_){
     std::cout << "Please enter in the person first name: ";
@@ -110,7 +98,7 @@ int main(){
     int option_;
     std::cout << "Welcome to Network!\n Our goal is to connect the world!\n";
     std::cout << "Please enter the number that correspond with the option you want.\n" 
-    << "1. Set Currenet Person \n2. Add Person\n3. Remove Person\n4. Change Name\n5. List Friends\n6. Add Friend\n7. Remove Friend" 
+    << "1. Add Person\n2. Remove Person\n3. Change Name\n5. List Friends\n6. Add Friend\n7. Remove Friend" 
     << "\n8. Friend Recommendation\nList Everybody\n10. Close Program\n";
     std::cin >> option_;
 
@@ -118,45 +106,39 @@ int main(){
         switch (option_)
         {
             case 1:
-            /** SET PERSON **/
-                setPerson("set", world_);
-                break;
-
-            case 2:
                 /** ADD PERSON **/
                 addPerson(world_);
                 break;
-            case 3:
+            case 2:
                 /** REMOVE PERSON **/
-                setPerson("remove", world_);
+                setPerson(1, world_);
                 removePerson(world_);
                 break;
-            case 4:
+            case 3:
                 /** CHANGE PERSON NAME **/
-                setPerson("change", world_);
+                setPerson(2, world_);
                 changeName(world_);
                 break;
 
-            case 5:
-                setPerson("set", world_);
-                listFriends(world_);
-                break;
-            case 6:
-                /** ADD FRIEND **/
-                setPerson("add friend", world_);
-                addFriend(world_);
-                break;
-            case 7:
-                /** REMOVE FRIEND**/
-                setPerson("remove friend", world_);
-                break;
-            case 8:
+            // case 5:
+            //     setPerson("set", world_);
+            //     listFriends(world_);
+            //     break;
+            // case 6:
+            //     /** ADD FRIEND **/
+            //     setPerson("add friend", world_);
+            //     addFriend(world_);
+            //     break;
+            // case 7:
+            //     /** REMOVE FRIEND**/
+            //     setPerson("remove friend", world_);
+            //     break;
+            // case 8:
                 /** FRIEND RECOMMENDATION **/
                 break;
             case 9:
                 /** LIST EVERYBODY **/
                 listPeople(world_);
-                std::cout << "hi";
                 break;
             case 10:
                 /** CURRENT SIZE **/
@@ -166,7 +148,7 @@ int main(){
                 std::cout << "That was an invalid input";
                 break;
         }
-        std::cout << "Please enter the number that correspond with the option you want.\n" 
+        std::cout << "\nPlease enter the number that correspond with the option you want.\n" 
         << "1. Set Currenet Person \n2. Add Person\n3. Remove Person\n4. Change Name\n5. List Friends\n6. Add Friend\n7. Remove Friend" 
         << "\n8. Friend Recommendation\n9. List Everybody\n10. Close Program\n";
         std::cin >> option_;

@@ -9,11 +9,10 @@
 class Network{
 
     private:
-        int id_;
-        std::unordered_map<std::string ,Person*> network_;
-        std::unordered_map<std::string, int> duplicate_table_;
+        std::unordered_map<int, Person*> network_;
+        std::unordered_map<std::string, std::vector<int>> second_table_;
+        int new_id_;
         Person* current_person_;
-        Person* person_;
         Person* friend_;
     public:
     /** BASIC FUNCTIONS **/
@@ -31,8 +30,8 @@ class Network{
     /**
      * @brief function sets the currerent person
      * 
-     * @param const reference to a string of the first name 
-     * @param const reference to a string of the last nmae
+     * @param reference to a string of the first name 
+     * @param reference to a string of the last nmae
      * 
      * @return true or flase if done
      */
@@ -79,6 +78,8 @@ class Network{
      * @return true or false
     */
     bool changePersonName(const std::string& new_first_name, const std::string& new_last_name);
+
+    void idMaker();
 
 
     /* FRIENDS SECTION */
@@ -138,7 +139,7 @@ class Network{
      * 
      * @return true or false 
      */
-    bool removeDuplicate();
+    bool removeDuplicate(std::string first, std::string last);
 
     /**
      * @brief function list out all duplicates
@@ -147,6 +148,8 @@ class Network{
      * 
      * @return pointer to a Person
      */
-    Person* listDuplicate(Person* dup_person_);
+    Person* listDuplicate(const std::vector<int>& duplicate_people_);
+
+    void duplicateRebalance();
 };
 #endif

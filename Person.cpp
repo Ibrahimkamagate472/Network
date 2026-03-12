@@ -2,13 +2,22 @@
 
 Person::Person(){}
 
-Person::Person(std::string first_name, std::string last_name, std::string school, 
+Person::Person(int id, std::string first_name, std::string last_name, std::string school, 
 std::string field, std::unordered_map<std::string, std::string> friends):
-first_name_{first_name}, last_name_{last_name}, school_{school}, field_{field}, friends_{friends}{}
+id_{id}, first_name_{first_name}, last_name_{last_name}, school_{school}, field_{field}, friends_{friends}{}
 
 /** GETTERS **/
+
 /**
- * @brief this function gets the first name of a person
+ * @brief function gets the id of a person
+ * 
+ * @return an int of the id
+ */
+int Person::getId(){
+    return id_;
+}
+/**
+ * @brief function gets the first name of a person
  * 
  * @return returns a string to the person's first name 
  */
@@ -17,7 +26,7 @@ std::string Person::getFirstName(){
 }
 
 /**
- * @brief this function gets the last name of a person
+ * @brief function gets the last name of a person
  * 
  * @return returns a string to the person's last name 
  */
@@ -26,7 +35,7 @@ std::string Person::getLastName(){
 }
 
 /**
- * @brief this function returns a persons full name
+ * @brief function returns a persons full name
  * 
  * @return the full name of the person
  */
@@ -35,12 +44,12 @@ std::string Person::getFullName(){
 }
 
 /**
- * @brief this functions return all the person data
+ * @brief functions return all the person data
  * 
  * @return a string of all data
  */
 std::string Person::getFullData(){
-    return "Name: " + first_name_ + " " + last_name_ + "\n School: " + school_
+    return "Name: " + first_name_ + " " + last_name_ + "\nSchool: " + school_
     + "\nField: " + field_;
 }
 
@@ -74,7 +83,7 @@ bool Person::inFriendsList(std::string friend_name_){
 /** SETTERS **/
 
 /**
- * @brief this function gets the first name of a person
+ * @brief function gets the first name of a person
  * 
  * @param const reference to a string of the first name
  */
@@ -83,7 +92,7 @@ void Person::setFirstName(const std::string& first_){
 }
 
 /**
- * @brief this function gets the last name of a person
+ * @brief function gets the last name of a person
  * 
  * @param const reference to a string of the last name 
  */
@@ -92,7 +101,7 @@ void Person::setLastName(const std::string& last_){
 }
 
 /**
- * @brief this function gets the last name of a person
+ * @brief function gets the last name of a person
  * 
  * @param const reference to a string of the school
  */
@@ -102,7 +111,7 @@ void Person::setSchool(const std::string& college_){
 
 
 /**
- * @brief this function gets the last name of a person
+ * @brief function gets the last name of a person
  * 
  * @param const reference to a string of the field
  */
@@ -114,7 +123,7 @@ void Person::setField(const std::string& job_){
 /** MUTATORS **/
 
 /**
- * @brief this function changes the first name of a person
+ * @brief function changes the first name of a person
  * 
  * @param const reference to a string of the new first name 
  * 
@@ -125,7 +134,7 @@ bool Person::changeFirstName(const std::string& first_){
 }
 
 /**
- * @brief this function changes the first name of a person
+ * @brief function changes the first name of a person
  * 
  * @param const referent to a string of the new last name
  * 

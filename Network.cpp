@@ -11,19 +11,14 @@
  * @return a pointer to the person
  */
 Person* Network::lookUp(const std::string& first_name_, const std::string& last_name_){
-    auto look_up_ = network_.find(first_name_ + " " + last_name_);
+    auto& look_up_ = second_table_[first_name_ + " " + last_name_];
 
-    //if person not in network then we set to nullptr
-    if(look_up_  != network_.end()){
-        //checks if there are duplicate people by that name
-        if(duplicateChecker(look_up_->second)){
-            std::cout << "There is more than one person with that name\n";
-            //listDuplicates return the duplicated person that we want
-            person_ = listDuplicate(look_up_->second);
-            return person_;
-        }
-        //if there is no duplicate then we return the person from the network
-        return look_up_->second;
+    //There is one or more person
+    if(look_up_.size() > 1) {
+        std::cout << "There is more than one person with that name.";
+        return listDuplicate(look_up_);
+    }else if(look_up_.size() == 1){
+        return network_[1];
     }
     //if the person is not in the network
     return nullptr;
@@ -38,15 +33,15 @@ Person* Network::lookUp(const std::string& first_name_, const std::string& last_
  * @return true or flase if done
  */
  bool Network::setCurrentPerson(const std::string& first_name_,const std::string& last_name_){
-    person_ = lookUp(first_name_, last_name_);
+    Person* temp_person_ = lookUp(first_name_, last_name_);
 
     //checks if there person even exist in our network
-    if(person_ == nullptr){
+    if(temp_person_ == nullptr){
         std::cout << "\nThis person does not exist in our network." << std::endl;
         return 0;
     }
     //if they do they we set it to the current person that we want to minipluate
-    current_person_ = person_;
+    current_person_ = temp_person_;
     return 1;
 }
 
@@ -63,20 +58,18 @@ void Network::listEverybody(){
         if(list_ == "yes" || list_ == "Yes"){
             int i = 1;
             for(const auto& list_person_ : network_){
-                std::cout << i << list_person_.second->getFullName() << std::endl;
+                std::cout << i << ". " << list_person_.second->getFullData() << std::endl;
                 i++;
             }
         }
     }else{
         int i = 1;
         for(const auto& list_person_ : network_){
-            std::cout << i << list_person_.second->getFullName() << std::endl;
+            std::cout << i << ". " << list_person_.second->getFullName() << std::endl;
             i++;
         }
 
     }
-    
-
 }
 
 /** 
@@ -99,19 +92,17 @@ void Network::size(){
  * @return true or false 
  */
 bool Network::addPerson(std::string first_name_, std::string last_name_, std::string school_, std::string field_){
-    Person* new_person = new Person (first_name_,last_name_, school_, field_, {});
+    idMaker();
+    Person* new_person_ = new Person (new_id_, first_name_,last_name_, school_, field_, {});
+    
+    // store person in main network table
+    network_[new_person_->getId()] = new_person_;
+    second_table_[new_person_->getFullName()].push_back(new_person_->getId());
 
-    //calls duplicateChecker to see if there are duplicates 
-    if(duplicateChecker(new_person)){
-        if(addDuplicate(new_person)){
-            return 1;
-        }
-    }else{
-        network_[new_person->getFullName()] = new_person;
-        return 1;
-    }
-    delete new_person;
-    return 0;
+    // move to next available ID
+    new_id_++;
+
+    return 1;
 }
 
 /**
@@ -120,14 +111,21 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
  * @return true or false 
  */
 bool Network::removePerson(){
-    //if its a dup person we remove with dup function
-    if(duplicateChecker(current_person_)){
-        if(removeDuplicate()){
-            return 1;
+
+    if(network_.erase(current_person_->getId())){
+        auto& ids = second_table_[current_person_->getFirstName()];
+            for (auto it = ids.begin(); it != ids.end(); it++) {
+                if (*it == current_person_->getId()) {
+                    ids.erase(it);
+                    break;
+                }
+                
+            }
+        //if there is no more people with that name remove them from the second table
+        if (ids.empty()) {
+            second_table_.erase(current_person_->getFirstName());
         }
-    }else{
-    network_.erase(current_person_->getFullName());
-    return 1;
+        return 1;
     }
 
     return 0;
@@ -147,6 +145,11 @@ bool Network::changePersonName(const std::string& new_first_name, const std::str
         return 1;
     }
     return 0;
+}
+
+
+void Network::idMaker(){
+    new_id_ ++;
 }
 
 /** FRIENDS SECTION **/
@@ -217,106 +220,33 @@ void Network::recomendFriend(){
 /** DUPLICATE HANDLER SECTION **/
 
 /**
- * @brief function checks if the person a is our duplicate list 
- * 
- * @param pointer to a person that is being checked for duplicates 
- * 
- * @returns true or false if there are duplicates
- */
-bool Network::duplicateChecker(Person* dup_person_){
-    //find the name in the table
-    auto checker_ = duplicate_table_.find(person_->getFullName());
-
-    //if in the table
-    if(checker_ != duplicate_table_.end()){
-        return 1;
-    }
-    return 0;
-}
-
-/**
- * @brief function adds a duplicate person to the network
- * 
- * @param pointer to a person that is being added as a duplicate
- * 
- * @return true or false 
- *
- */
-bool Network::addDuplicate(Person* duplicate_person_){
-    //find the person in the dup table
-    auto dup_finder = duplicate_table_.find(duplicate_person_->getFullName());
-
-    //this is the first duplicate for that name
-    if(dup_finder == duplicate_table_.end()){
-        //add them to the duplicate table and add the to the network with a slightly changed name
-        duplicate_table_.insert({duplicate_person_->getFullName(), 2});
-        network_.insert({"2" + duplicate_person_->getFullName(), duplicate_person_});
-        return 1;
-    }else{
-        //if there is more than one person for that name then we increase the total by 1
-        int value_ = duplicate_table_[duplicate_person_->getFullName()] ++;
-        //convert the int to string and set the naming style the same for if its the first duplicate or 30th
-        network_.insert({std::to_string(value_) + duplicate_person_->getFullName(), duplicate_person_});
-        return 1;
-    }
-    return 0;
-
-}
-
-/**
- * @brief function removes a person that is a duplicate
- * 
- * @return true or false 
- */
-bool Network::removeDuplicate(){
-    //after the removal there will be no dups for that name 
-    //so no need to have in dup table
-    if(duplicate_table_[current_person_->getFullName()] == 2){
-        duplicate_table_.erase(current_person_->getFullName());
-        network_.erase(current_person_->getFullName());
-        return 1;
-    }else{
-        duplicate_table_[current_person_->getFullName()] --;
-        network_.erase(current_person_->getFullName());
-        return 1;
-    }
-    return 0;
-
-}
-
-/**
  * @brief function list out all duplicates
  * 
  * @param pointer to a Person 
  * 
  * @return pointer to a Person
  */
-Person* Network::listDuplicate(Person* dup_person_ ){ 
-
-    //get the amount of duplicates of that name 
-    int amount_ = duplicate_table_[dup_person_->getFullName()];
-    
-    //cout the first person
-    std::cout << "1. \n" << dup_person_->getFullData();
-
-    //while we didn't reach the amount of duplicates there are, cout all of them 
-    for(int i = 2; i <= amount_; i++){
-        //find the dup person and cout all data
-        auto in = network_.find(std::to_string(i)+person_->getFullName());
-        std::cout << "\n" << i << ". " << in->second->getFullData();
+Person* Network::listDuplicate(const std::vector<int>& duplicate_people_){ 
+    int select_;
+    int amount_ = duplicate_people_.size();
+    int i = 1;
+    //list all the duplicates with that name
+    for(const auto& person_ : duplicate_people_){
+        std::cout << std::endl << i << "." << network_[person_]->getFullData() << std::endl;
+        i++;
     }
 
     //make the person choose what duplicate person they want 
-    int select_;
-    std::cout << "\nPlease chose a number 1-" << amount_ << " to select the person.";
+    std::cout << "\nPlease chose a number 1 - " << amount_ << " to select the person: ";
     std::cin >> select_;
 
     while(select_ > amount_ || select_ < 0){
-        std::cout << "Incorrect value or out of bound.";
-        std::cout << "\nPlease chose a number 1-" << amount_ << " to select the person.";
+        std::cout << "Incorrect value, out of bound.";
+        std::cout << "\nPlease chose a number 1 - " << amount_ << " to select the person: ";
         std::cin >> select_;
-        }
-    //returns the person they want
-    auto return_person_ = network_.find(std::to_string(select_) + person_->getFullName());
-    return return_person_->second;
+    }
+
+    //override select to the id of the person
+    select_ = duplicate_people_[select_];
+    return network_[select_];
 }
