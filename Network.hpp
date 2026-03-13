@@ -11,7 +11,8 @@ class Network{
     private:
         std::unordered_map<int, Person*> network_;
         std::unordered_map<std::string, std::vector<int>> second_table_;
-        int new_id_;
+        int new_id_ = 0;
+        int vec_location_ = 0;
         Person* current_person_;
         Person* friend_;
     public:
@@ -148,7 +149,7 @@ class Network{
      * 
      * @return pointer to a Person
      */
-    Person* listDuplicate(const std::vector<int>& duplicate_people_);
+    Person* listDuplicate(std::vector<int>& duplicate_people_);
 
     void duplicateRebalance();
 };

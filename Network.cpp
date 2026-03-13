@@ -18,7 +18,7 @@ Person* Network::lookUp(const std::string& first_name_, const std::string& last_
         std::cout << "There is more than one person with that name.";
         return listDuplicate(look_up_);
     }else if(look_up_.size() == 1){
-        return network_[1];
+        return network_[look_up_[0]];
     }
     //if the person is not in the network
     return nullptr;
@@ -98,10 +98,7 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
     // store person in main network table
     network_[new_person_->getId()] = new_person_;
     second_table_[new_person_->getFullName()].push_back(new_person_->getId());
-
-    // move to next available ID
-    new_id_++;
-
+    std::cout << "\nID" << new_person_->getId();
     return 1;
 }
 
@@ -111,22 +108,39 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
  * @return true or false 
  */
 bool Network::removePerson(){
-
+    std::string temp_name_ = current_person_->getFullName();
+    //need to fix for when its one person 
+    //vec_locations is saved to the old 
     if(network_.erase(current_person_->getId())){
-        auto& ids = second_table_[current_person_->getFirstName()];
-            for (auto it = ids.begin(); it != ids.end(); it++) {
-                if (*it == current_person_->getId()) {
-                    ids.erase(it);
-                    break;
-                }
-                
-            }
-        //if there is no more people with that name remove them from the second table
-        if (ids.empty()) {
-            second_table_.erase(current_person_->getFirstName());
-        }
-        return 1;
+       auto& location_ =  second_table_[temp_name_];
+
+       if(location_.size() > 1){
+            location_.erase(location_.begin()+ vec_location_);
+       }else if(location_.size() == 1 || location_.empty()){
+            std::cout << "********erased";
+            second_table_.erase(temp_name_);
+
+       }
+
+       return 1;
     }
+
+
+    //error at the conditional
+    // if(network_.erase(current_person_->getId())){
+    //     auto& ids = second_table_[current_person_->getFirstName()];
+    //         for (auto it = ids.begin(); it != ids.end(); it++) {
+    //             if (*it == current_person_->getId()) {
+    //                ids.erase(it);
+    //                 break;
+    //             }
+                
+    //         }
+    //     if (ids.empty()) {
+    //         second_table_.erase(current_person_->getFirstName());
+    //     }
+    //     return 1;
+    // }
 
     return 0;
 }
@@ -226,13 +240,15 @@ void Network::recomendFriend(){
  * 
  * @return pointer to a Person
  */
-Person* Network::listDuplicate(const std::vector<int>& duplicate_people_){ 
-    int select_;
+Person* Network::listDuplicate(std::vector<int>& duplicate_people_){ 
+    int select_ = 0;
+    //gets the size of the amout of people with the same name
     int amount_ = duplicate_people_.size();
     int i = 1;
+    
     //list all the duplicates with that name
-    for(const auto& person_ : duplicate_people_){
-        std::cout << std::endl << i << "." << network_[person_]->getFullData() << std::endl;
+    for(const auto& ids_ : duplicate_people_){
+        std::cout << std::endl << i << "." << network_[ids_]->getFullData() << std::endl;
         i++;
     }
 
@@ -240,13 +256,19 @@ Person* Network::listDuplicate(const std::vector<int>& duplicate_people_){
     std::cout << "\nPlease chose a number 1 - " << amount_ << " to select the person: ";
     std::cin >> select_;
 
+
     while(select_ > amount_ || select_ < 0){
         std::cout << "Incorrect value, out of bound.";
         std::cout << "\nPlease chose a number 1 - " << amount_ << " to select the person: ";
         std::cin >> select_;
     }
+    
+    int test = select_;
+    test --;
+    vec_location_ = test;
+    select_ = duplicate_people_[test];
+    std::cout << "\n\n\n" << test;
+    std::cout << "\n\n\n vec" << vec_location_;
 
-    //override select to the id of the person
-    select_ = duplicate_people_[select_];
     return network_[select_];
 }
