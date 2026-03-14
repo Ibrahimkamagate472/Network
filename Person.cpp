@@ -131,6 +131,7 @@ void Person::setField(const std::string& job_){
  */
 bool Person::changeFirstName(const std::string& first_){
     first_name_ = first_;
+    return 1;
 }
 
 /**
@@ -142,6 +143,7 @@ bool Person::changeFirstName(const std::string& first_){
  */
 bool Person::changeLastName(const std::string& last_){
     last_name_ = last_;
+    return 1;
 }
 
 
@@ -178,6 +180,7 @@ bool Person::friendRemove(Person* friend_search_){
 void Person::friendsList(){
     //checks if the have any friends 
     if(friends_.empty()){
+        std::cout << "\nThis person has no friends";
         return;
     }
 
@@ -190,6 +193,6 @@ void Person::friendsList(){
     std::sort(names_.begin(), names_.end());
 
     for(const auto& person_ : names_){
-        std::cout << person_ << std::endl;
+        std::cout << std::endl << person_ << std::endl;
     }
 }

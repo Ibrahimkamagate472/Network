@@ -98,7 +98,6 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
     // store person in main network table
     network_[new_person_->getId()] = new_person_;
     second_table_[new_person_->getFullName()].push_back(new_person_->getId());
-    std::cout << "\nID" << new_person_->getId();
     return 1;
 }
 
@@ -109,39 +108,19 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
  */
 bool Network::removePerson(){
     std::string temp_name_ = current_person_->getFullName();
-    //need to fix for when its one person 
-    //vec_locations is saved to the old 
+
+    //delete them from the network
     if(network_.erase(current_person_->getId())){
        auto& location_ =  second_table_[temp_name_];
 
+       //checks the size of people with the same name to determine how to delete
        if(location_.size() > 1){
             location_.erase(location_.begin()+ vec_location_);
        }else if(location_.size() == 1 || location_.empty()){
-            std::cout << "********erased";
             second_table_.erase(temp_name_);
-
        }
-
        return 1;
     }
-
-
-    //error at the conditional
-    // if(network_.erase(current_person_->getId())){
-    //     auto& ids = second_table_[current_person_->getFirstName()];
-    //         for (auto it = ids.begin(); it != ids.end(); it++) {
-    //             if (*it == current_person_->getId()) {
-    //                ids.erase(it);
-    //                 break;
-    //             }
-                
-    //         }
-    //     if (ids.empty()) {
-    //         second_table_.erase(current_person_->getFirstName());
-    //     }
-    //     return 1;
-    // }
-
     return 0;
 }
 
@@ -154,8 +133,12 @@ bool Network::removePerson(){
  * @return true or false
 */
 bool Network::changePersonName(const std::string& new_first_name, const std::string& new_last_name){
-    if(current_person_->changeFirstName(new_first_name) &&
-    current_person_->changeLastName(new_last_name)){
+    Person* temp_ = current_person_;
+    removePerson();
+    if(temp_->changeFirstName(new_first_name) &&
+    temp_->changeLastName(new_last_name)){
+        network_[temp_->getId()] = temp_;
+        second_table_[temp_->getFullName()].push_back(temp_->getId());
         return 1;
     }
     return 0;
@@ -263,12 +246,9 @@ Person* Network::listDuplicate(std::vector<int>& duplicate_people_){
         std::cin >> select_;
     }
     
-    int test = select_;
-    test --;
-    vec_location_ = test;
-    select_ = duplicate_people_[test];
-    std::cout << "\n\n\n" << test;
-    std::cout << "\n\n\n vec" << vec_location_;
-
+    int idx = select_;
+    idx --;
+    vec_location_ = idx;
+    select_ = duplicate_people_[idx];
     return network_[select_];
 }
