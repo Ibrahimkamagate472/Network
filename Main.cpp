@@ -76,6 +76,7 @@ void removePerson(Network& world_){
         if(world_.removePerson()){
             std::cout << "\nYou have successfully removed " << first_name_ << " " <<
             last_name_;
+            return;
         }
         std::cout << "\nThere was an error removing " << first_name_ << " " << last_name_ << " from the world.";
     }
@@ -132,7 +133,7 @@ void listFriends(Network& world_){
 
 void friendRecommendation(Network& world_){
     if(setPerson(6, world_)){
-
+        world_.recomendFriend();
     }
 }
 
@@ -147,7 +148,7 @@ int main(){
     int option_;
     std::cout << "Welcome to Network!\nOur goal is to connect the world!\n";
     std::cout << "Please enter the number that correspond with the option you want.\n" 
-    << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Frien\n6. list Friends" 
+    << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6. list Friends" 
     << "\n7. Friend Recommendation\n8. List Everybody\n9. Current Size of Network\n10. Close Program\n";
     std::cin >> option_;
 
@@ -202,7 +203,7 @@ int main(){
                 break;
         }
         std::cout << "\nPlease enter the number that correspond with the option you want.\n" 
-        << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Frien\n6. list Friends" 
+        << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6. list Friends" 
         << "\n7. Friend Recommendation\n8. List Everybody\n9. Current Size of Network\n10. Close Program\n";
         std::cin >> option_;
     }

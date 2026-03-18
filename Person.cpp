@@ -3,8 +3,9 @@
 Person::Person(){}
 
 Person::Person(int id, std::string first_name, std::string last_name, std::string school, 
-std::string field, std::unordered_map<std::string, std::string> friends):
-id_{id}, first_name_{first_name}, last_name_{last_name}, school_{school}, field_{field}, friends_{friends}{}
+std::string field, std::unordered_map<int, Person*> friends):
+id_{id}, first_name_{first_name}, last_name_{last_name}, school_{school}, field_{field}, 
+friends_{friends}{}
 
 /** GETTERS **/
 
@@ -69,15 +70,6 @@ std::string Person::getSchool(){
  */
 std::string Person::getField(){
     return field_;
-}
-
-
-std::unordered_map<std::string, std::string> Person::getFriends(){
-    return friends_;
-}
-
-bool Person::inFriendsList(std::string friend_name_){
-
 }
 
 /** SETTERS **/
@@ -151,12 +143,11 @@ bool Person::changeLastName(const std::string& last_){
 
 
 bool Person::friendAdd(Person* friend_search_){
-    auto person_ = friends_.find(friend_search_->getFirstName());
+    auto person_ = friends_.find(friend_search_->getId());
 
     //makes sure we not adding the same people over
     if(person_ == friends_.end()){
-       //friends_.insert(friend_search_->getFullName(), friend_search_->getFullName());
-       friends_[friend_search_->getFullName()] = friend_search_->getFullName();
+       friends_[friend_search_->id_] = friend_search_;
        return 1;
     }
     return 0;
@@ -168,7 +159,7 @@ bool Person::friendRemove(Person* friend_search_){
         return 0;
     }
     //finds the person
-    auto person_ = friends_.find(friend_search_->getFullName());
+    auto person_ = friends_.find(friend_search_->getId());
 
     if(person_ != friends_.end()){
         friends_.erase(person_);
@@ -187,7 +178,7 @@ void Person::friendsList(){
     std::vector<std::string> names_;
     //loops through all the friends and add to a vector 
     for(const auto& person_: friends_){
-        names_.push_back(person_.first);
+        names_.push_back(person_.second->getFullName());
     }
     //sort the names and cout 
     std::sort(names_.begin(), names_.end());

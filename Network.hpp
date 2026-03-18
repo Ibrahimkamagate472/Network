@@ -11,6 +11,7 @@ class Network{
     private:
         std::unordered_map<int, Person*> network_;
         std::unordered_map<std::string, std::vector<int>> second_table_;
+        std::unordered_map<std::string, std::vector<int>> same_schol_field_;
         int new_id_ = 0;
         int vec_location_ = 0;
         Person* current_person_;

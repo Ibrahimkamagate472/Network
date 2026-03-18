@@ -11,12 +11,12 @@ class Person{
         std::string last_name_;
         std::string school_;
         std::string field_;
-        std::unordered_map<std::string, std::string> friends_;
+        std::unordered_map<int, Person*> friends_;
     public:
         Person();
 
         Person(int id, std::string first_name, std::string last_name, std::string school, 
-            std::string field, std::unordered_map<std::string, std::string> friends);
+            std::string field, std::unordered_map<int, Person*> friends);
         
         /** GETTERS **/
         /**
@@ -66,11 +66,6 @@ class Person{
          * @return a string of the field
          */
         std::string getField();
-
-        std::unordered_map<std::string, std::string> getFriends();
-
-        bool inFriendsList(std::string friend_name_);
-
 
         /** SETTERS **/
 

@@ -98,6 +98,10 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
     // store person in main network table
     network_[new_person_->getId()] = new_person_;
     second_table_[new_person_->getFullName()].push_back(new_person_->getId());
+
+    //for friend rec.
+    same_schol_field_[field_].push_back(new_id_);
+    same_schol_field_[school_].push_back(new_id_);
     return 1;
 }
 
@@ -197,21 +201,20 @@ void Network::listFriends(){
  * @brief function recomends a new friend for the current person
  */
 void Network::recomendFriend(){
-    //friends of friends
-    // for(const auto& friends_of_friends_: current_person_->getFriends()){
-    //     if(friends_of_friends_ )
-    // }
-    for(const auto& new_friend_ : network_){
-        if(new_friend_.second == current_person_){
-            continue;
-        }else{
-            if(new_friend_.second->getSchool() == current_person_->getSchool()){
-                std::cout << "\n" << new_friend_.second->getFullData();
-            }else if(new_friend_.second->getField() == current_person_->getField()){
-                std::cout << "\n" << new_friend_.second->getFullData();
-            }
+    //gets the vector of people that have similar attributes with the current person
+    const auto& same_school_ = same_schol_field_.find(current_person_->getSchool());
+    const auto& same_field_ = same_schol_field_.find(current_person_->getField());
+    
+    int amount_ = std::min(10, (int)same_school_->second.size());
+
+    for (int i = 0; i < amount_; i++){
+        int idx = same_school_->second[i];
+        if(network_[idx]->getId() != current_person_->getId()){
+            std::cout << "\nSame school:";
+            std::cout << std::endl << i+1 << ". " << network_[idx]->getFullName();
         }
     }
+    
 }
 
 /** DUPLICATE HANDLER SECTION **/
@@ -231,8 +234,13 @@ Person* Network::listDuplicate(std::vector<int>& duplicate_people_){
     
     //list all the duplicates with that name
     for(const auto& ids_ : duplicate_people_){
-        std::cout << std::endl << i << "." << network_[ids_]->getFullData() << std::endl;
-        i++;
+        //if statment stops a person from adding themselves
+        if(ids_ != current_person_->getId()){
+            std::cout << std::endl << std::endl << i << "." << network_[ids_]->getFullData() << std::endl;
+            i++;
+        }else{
+            amount_--;
+        }
     }
 
     //make the person choose what duplicate person they want 
