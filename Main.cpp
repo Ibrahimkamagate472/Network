@@ -105,7 +105,7 @@ void addFriend(Network& world_){
         std::cout << "Please enter the last name of the person you want to add: ";
         std::cin >> friend_last_;
 
-        if(world_.addFriend(friend_first_,friend_last_)){
+        if(world_.addFriend(friend_first_,friend_last_, -1)){
             std::cout << "\nYou have successfully added " << friend_first_ << " " << friend_last_ <<
             " as a friend!";
             return;
@@ -133,7 +133,7 @@ void listFriends(Network& world_){
 
 void friendRecommendation(Network& world_){
     if(setPerson(6, world_)){
-        world_.recomendFriend();
+        world_.recommendFriend();
     }
 }
 
@@ -181,6 +181,7 @@ int main(){
                 break;
 
             case 6:
+            /**  LIST FRIENDS **/
                 listFriends(world_);
                 break;
 

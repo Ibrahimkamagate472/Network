@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unordered_map>
+#include <algorithm>
 #include "Person.hpp"
 
 
@@ -11,7 +12,7 @@ class Network{
     private:
         std::unordered_map<int, Person*> network_;
         std::unordered_map<std::string, std::vector<int>> second_table_;
-        std::unordered_map<std::string, std::vector<int>> same_schol_field_;
+        std::unordered_map<std::string, std::vector<int>> same_school_field_;
         int new_id_ = 0;
         int vec_location_ = 0;
         Person* current_person_;
@@ -94,7 +95,8 @@ class Network{
      * 
      * @return true or false if we were able to add the friend
      */
-    bool addFriend(const std::string& friend_first_name, const std::string& friend_last_name_);
+    bool addFriend(const std::string& friend_first_name, const std::string& friend_last_name_, 
+        int friend_id_);
 
 
     /**
@@ -113,36 +115,10 @@ class Network{
     /**
      * @brief function recomends a new friend for the current person
      */
-    void recomendFriend();
+    void recommendFriend();
 
     /** DUPLICATE HANDLER SECTION **/
-
-    /**
-     * @brief function checks if the person a is our duplicate list 
-     * 
-     * @param pointer to a person that is being checked for duplicates 
-     * 
-     * @returns true or false if there are duplicates
-     */
-    bool duplicateChecker(Person* dup_person_);
-
-    /**
-     * @brief function adds a duplicate person to the network
-     * 
-     * @param pointer to a person that is being added as a duplicate
-     * 
-     * @return true or false 
-     *
-     */
-    bool addDuplicate(Person* duplicate_person_);
-
-    /**
-     * @brief function removes a person that is a duplicate
-     * 
-     * @return true or false 
-     */
-    bool removeDuplicate(std::string first, std::string last);
-
+    
     /**
      * @brief function list out all duplicates
      * 
@@ -152,6 +128,5 @@ class Network{
      */
     Person* listDuplicate(std::vector<int>& duplicate_people_);
 
-    void duplicateRebalance();
 };
 #endif

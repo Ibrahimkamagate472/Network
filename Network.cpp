@@ -100,8 +100,8 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
     second_table_[new_person_->getFullName()].push_back(new_person_->getId());
 
     //for friend rec.
-    same_schol_field_[field_].push_back(new_id_);
-    same_schol_field_[school_].push_back(new_id_);
+    same_school_field_[field_].push_back(new_id_);
+    same_school_field_[school_].push_back(new_id_);
     return 1;
 }
 
@@ -163,12 +163,26 @@ void Network::idMaker(){
  * 
  * @return true or false if done 
  */
-bool Network::addFriend(const std::string& friend_first_name, const std::string& friend_last_name_){
-    friend_ = lookUp(friend_first_name, friend_last_name_);
+bool Network::addFriend(const std::string& friend_first_name, const std::string& friend_last_name_, 
+    int friend_id_){
+    //if we adding a friend from main friend id will be -1 and we go with the strings
+    if(friend_id_ < 0){
+        friend_ = lookUp(friend_first_name, friend_last_name_);
 
-    //makes sure the person exist that we will be adding
-    if(friend_ != nullptr && current_person_->friendAdd(friend_)){
-        return 1;
+        //makes sure the person exist that we will be adding
+        if(friend_ != nullptr && current_person_->friendAdd(friend_)){
+            return 1;
+        }
+    }
+    /*
+    if we are adding internal from recommendFriend, friend id will be the id of the person to add
+    did this to by pass listing duplicates when we already know the person we if there is duplicates
+    with that name 
+    */
+    else{
+        if(current_person_->friendAdd(network_.find(friend_id_)->second)){
+            return 1;
+        }
     }
     return 0;
 }
@@ -198,23 +212,70 @@ void Network::listFriends(){
 }
 
 /**
- * @brief function recomends a new friend for the current person
+ * @brief function recommends a new friend for the current person
  */
-void Network::recomendFriend(){
+void Network::recommendFriend(){
+    int add_ = 0;
     //gets the vector of people that have similar attributes with the current person
-    const auto& same_school_ = same_schol_field_.find(current_person_->getSchool());
-    const auto& same_field_ = same_schol_field_.find(current_person_->getField());
-    
-    int amount_ = std::min(10, (int)same_school_->second.size());
+    const auto& same_school_ = same_school_field_.find(current_person_->getSchool());
+    const auto& same_field_ = same_school_field_.find(current_person_->getField());
 
-    for (int i = 0; i < amount_; i++){
-        int idx = same_school_->second[i];
-        if(network_[idx]->getId() != current_person_->getId()){
-            std::cout << "\nSame school:";
-            std::cout << std::endl << i+1 << ". " << network_[idx]->getFullName();
+    //base case, if there is only 1 then its the current person
+    if(same_school_->second.size() == 1  && same_field_->second.size() == 1){
+        std::cout << "\nThere is no recommendation for friends currently.";
+        return;
+    }
+
+    std::vector<int> recommendations_;
+    //gets the minimum amount form the 3 value to use to cout
+    int school_amount_ = std::min(5, (int)same_school_->second.size()) - 1;
+    int field_amount_ = std::min(5, (int)same_field_->second.size()) - 1;
+    int i = 0;
+
+    for(const auto& person_ : same_school_->second){
+        if(i < school_amount_){
+            if(person_ != current_person_->getId()){
+                std::cout << "\n" << i + 1 << ". " << network_[person_]->getFullName() << ": same school.";
+                recommendations_.push_back(person_);
+                i++;
+            }
+        }else{
+            break;
         }
     }
-    
+
+    for(const auto& person_ : same_field_->second){
+        if(i < field_amount_ + school_amount_){
+            if(person_ != current_person_->getId()){
+                std::cout << "\n" << i + 1 << ". " << network_[person_]->getFullName() << ": same field.";
+                recommendations_.push_back(person_);
+                i++;
+            }
+        }else{
+            break;
+        }
+    }
+
+    std::string option_;
+    std::cout << "\nWould you like to add one of the recommendations please enter 'yes' or 'no': ";
+    std::cin >> option_;
+
+    while(option_ != "no"){
+        if(option_ == "yes"){
+            std::cout << "\nWhat number would you like to add: "; 
+            std::cin >> add_;
+            break;
+        }else{
+            std::cout << "\nInvalid input.";
+            std::cout << "\nPlease enter 'yes' or 'no' to add one of your recommended friend: ";
+            std::cin >> option_;
+        }
+    }
+    if(addFriend("", "" , network_[recommendations_[--add_]]->getId())){
+        std::cout << "\nYou have successfully added our recommendation. ";
+        return;
+    }
+    std::cout << "\nThere was an error.";
 }
 
 /** DUPLICATE HANDLER SECTION **/
