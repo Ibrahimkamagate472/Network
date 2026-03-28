@@ -148,7 +148,9 @@ bool Network::changePersonName(const std::string& new_first_name, const std::str
     return 0;
 }
 
-
+/**
+ * @brief function makes ids for each person that is added to the network
+ */
 void Network::idMaker(){
     new_id_ ++;
 }

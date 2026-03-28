@@ -26,28 +26,28 @@ class Person{
          */
         int getId();
         /**
-         * @brief this function gets the first name of a person
+         * @brief function gets the first name of a person
          * 
          * @return returns a string to the person's first name 
          */
         std::string getFirstName();
 
         /**
-         * @brief this function gets the last name of a person
+         * @brief function gets the last name of a person
          * 
          * @return returns a string to the person's last name 
          */
         std::string getLastName();
         
         /**
-         * @brief this function returns a persons full name
+         * @brief function returns a persons full name
          * 
          * @return the full name of the person
          */
         std::string getFullName();
 
         /**
-         * @brief this functions return all the person data
+         * @brief functions return all the person data
          * 
          * @return a string of all data
          */
@@ -70,21 +70,21 @@ class Person{
         /** SETTERS **/
 
         /**
-         * @brief this function gets the first name of a person
+         * @brief function gets the first name of a person
          * 
          * @param const reference to a string of the first name
          */
         void setFirstName(const std::string& first_);
 
         /**
-         * @brief this function gets the last name of a person
+         * @brief function gets the last name of a person
          * 
          * @param const reference to a string of the last name 
          */
         void setLastName(const std::string& last_);
 
         /**
-         * @brief this function gets the last name of a person
+         * @brief function gets the last name of a person
          * 
          * @param const reference to a string of the school 
          */
@@ -92,7 +92,7 @@ class Person{
 
 
         /**
-         * @brief this function gets the last name of a person
+         * @brief function gets the last name of a person
          * 
          * @param const reference to a string of the field 
          */
@@ -102,7 +102,7 @@ class Person{
         /** MUTATORS **/
 
         /**
-         * @brief this function changes the first name of a person
+         * @brief function changes the first name of a person
          * 
          * @param const referent to a string of the new first name
          * 
@@ -111,7 +111,7 @@ class Person{
         bool changeFirstName(const std::string& first_);
 
         /**
-         * @brief this function changes the first name of a person
+         * @brief function changes the first name of a person
          * 
          * @param const referent to a string of the new last name
          * 
@@ -119,13 +119,30 @@ class Person{
          */
         bool changeLastName(const std::string& last_);
 
+        /** FRIENDS SECTION **/
 
-
-        /** **/
+        /** 
+         * @brief function adds a friend for a person
+         * 
+         * @param pointer to a Person that is going to be added to the friends list 
+         * 
+         * @return true or false if task was completed
+         * 
+         */
         bool friendAdd(Person* friend_);
 
+        /** 
+         * @brief function removes friend from the persons friends list
+         * 
+         * @param pointeer to a Person that is going to be removed from the friends list
+         * 
+         * @return ture or false if the task was completed
+        */
         bool friendRemove(Person* friend_);
 
+        /**
+         * @brief function cout the entire friends list for a person
+         */
         void friendsList();
 
 };

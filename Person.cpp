@@ -141,7 +141,14 @@ bool Person::changeLastName(const std::string& last_){
 
 /** FRIEND SECTION **/
 
-
+/** 
+ * @brief function adds a friend for a person
+ * 
+ * @param pointer to a Person that is going to be added to the friends list 
+ * 
+ * @return true or false if task was completed
+ * 
+ */
 bool Person::friendAdd(Person* friend_search_){
     auto person_ = friends_.find(friend_search_->getId());
 
@@ -153,6 +160,13 @@ bool Person::friendAdd(Person* friend_search_){
     return 0;
 }
 
+/** 
+ * @brief function removes friend from the persons friends list
+ * 
+ * @param pointeer to a Person that is going to be removed from the friends list
+ * 
+ * @return ture or false if the task was completed
+*/
 bool Person::friendRemove(Person* friend_search_){
     //checks if they have any firends
     if(friends_.empty()){
@@ -167,7 +181,9 @@ bool Person::friendRemove(Person* friend_search_){
     }
     return 0;
 }
-
+/**
+ * @brief function cout the entire friends list for a person
+ */
 void Person::friendsList(){
     //checks if the have any friends 
     if(friends_.empty()){

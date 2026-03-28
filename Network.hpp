@@ -82,6 +82,9 @@ class Network{
     */
     bool changePersonName(const std::string& new_first_name, const std::string& new_last_name);
 
+    /**
+     * @brief function makes ids for each person that is added to the network
+     */
     void idMaker();
 
 
