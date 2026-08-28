@@ -3,9 +3,9 @@
 Person::Person(){}
 
 Person::Person(int id, std::string first_name, std::string last_name, std::string school, 
-std::string field, std::unordered_map<int, Person*> friends):
+std::string field, std::unordered_map<int, Person*> friends, std::unordered_map<int, Person*> pending_friend_requests):
 id_{id}, first_name_{first_name}, last_name_{last_name}, school_{school}, field_{field}, 
-friends_{friends}{}
+friends_list_{friends}, pending_friend_requests_{pending_friend_requests}{}
 
 /** GETTERS **/
 
@@ -149,34 +149,42 @@ bool Person::changeLastName(const std::string& last_){
  * @return true or false if task was completed
  * 
  */
-bool Person::friendAdd(Person* friend_search_){
-    auto person_ = friends_.find(friend_search_->getId());
-
-    //makes sure we not adding the same people over
-    if(person_ == friends_.end()){
-       friends_[friend_search_->id_] = friend_search_;
-       return 1;
+int Person::friendAdd(Person* friend_){
+    //means that they are already friends
+    if(friends_list_.find(friend_->id_) != friends_list_.end()){
+        return 1;
     }
+    //means that a friend request has already been sent perviously 
+    else if(friend_->pending_friend_requests_.find(this->id_) != friend_->pending_friend_requests_.end()){
+        return 2;
+    }
+    //happens if they are not friends 
+    //add it to pending friend request for the person to accept or decline
+    else if(friends_list_.find(friend_->id_) == friends_list_.end()){
+        friend_->pending_friend_requests_[id_] = this;
+        return 3;
+    }
+
     return 0;
 }
 
 /** 
  * @brief function removes friend from the persons friends list
  * 
- * @param pointeer to a Person that is going to be removed from the friends list
+ * @param pointer to a Person that is going to be removed from the friends list
  * 
  * @return ture or false if the task was completed
 */
 bool Person::friendRemove(Person* friend_search_){
     //checks if they have any firends
-    if(friends_.empty()){
+    if(friends_list_.empty()){
         return 0;
     }
     //finds the person
-    auto person_ = friends_.find(friend_search_->getId());
+    auto person_ = friends_list_.find(friend_search_->getId());
 
-    if(person_ != friends_.end()){
-        friends_.erase(person_);
+    if(person_ != friends_list_.end()){
+        friends_list_.erase(person_);
         return 1;
     }
     return 0;
@@ -186,14 +194,14 @@ bool Person::friendRemove(Person* friend_search_){
  */
 void Person::friendsList(){
     //checks if the have any friends 
-    if(friends_.empty()){
+    if(friends_list_.empty()){
         std::cout << "\nThis person has no friends";
         return;
     }
 
     std::vector<std::string> names_;
     //loops through all the friends and add to a vector 
-    for(const auto& person_: friends_){
+    for(const auto& person_: friends_list_){
         names_.push_back(person_.second->getFullName());
     }
     //sort the names and cout 

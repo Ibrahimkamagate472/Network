@@ -11,12 +11,13 @@ class Person{
         std::string last_name_;
         std::string school_;
         std::string field_;
-        std::unordered_map<int, Person*> friends_;
+        std::unordered_map<int, Person*> friends_list_;
+        std::unordered_map<int, Person*> pending_friend_requests_;
     public:
         Person();
 
         Person(int id, std::string first_name, std::string last_name, std::string school, 
-            std::string field, std::unordered_map<int, Person*> friends);
+            std::string field, std::unordered_map<int, Person*> friends, std::unordered_map<int, Person*> pending_friend_requests) ;
         
         /** GETTERS **/
         /**
@@ -129,7 +130,7 @@ class Person{
          * @return true or false if task was completed
          * 
          */
-        bool friendAdd(Person* friend_);
+        int friendAdd(Person* friend_);
 
         /** 
          * @brief function removes friend from the persons friends list

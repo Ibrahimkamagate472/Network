@@ -11,6 +11,7 @@
  * @return a pointer to the person
  */
 Person* Network::lookUp(const std::string& first_name_, const std::string& last_name_){
+    //checks for duplicates for that name 
     auto& look_up_ = second_table_[first_name_ + " " + last_name_];
 
     //There is one or more person
@@ -166,27 +167,35 @@ void Network::idMaker(){
  * @return true or false if done 
  */
 bool Network::addFriend(const std::string& friend_first_name, const std::string& friend_last_name_, 
-    int friend_id_){
-    //if we adding a friend from main friend id will be -1 and we go with the strings
-    if(friend_id_ < 0){
-        friend_ = lookUp(friend_first_name, friend_last_name_);
+int friend_id_){
 
-        //makes sure the person exist that we will be adding
-        if(friend_ != nullptr && current_person_->friendAdd(friend_)){
-            return 1;
-        }
+    friend_ = lookUp(friend_first_name, friend_last_name_);
+    if(friend_ != nullptr){
+        current_person_->friendAdd(friend_);
+        return 1;
     }
-    /*
-    if we are adding internal from recommendFriend, friend id will be the id of the person to add
-    did this to by pass listing duplicates when we already know the person we if there is duplicates
-    with that name 
-    */
-    else{
-        if(current_person_->friendAdd(network_.find(friend_id_)->second)){
-            return 1;
-        }
-    }
+    
     return 0;
+    // //if we adding a friend from main friend id will be -1 and we go with the strings
+    // if(friend_id_ < 0){
+    //     friend_ = lookUp(friend_first_name, friend_last_name_);
+
+    //     //makes sure the person exist that we will be adding
+    //     if(friend_ != nullptr && current_person_->friendAdd(friend_)){
+    //         return 1;
+    //     }
+    // }
+    // /*
+    // if we are adding internal from recommendFriend, friend id will be the id of the person to add
+    // did this to by pass listing duplicates when we already know the person we if there is duplicates
+    // with that name 
+    // */
+    // else{
+    //     if(current_person_->friendAdd(network_.find(friend_id_)->second)){
+    //         return 1;
+    //     }
+    // }
+    // return 0;
 }
 
 /**

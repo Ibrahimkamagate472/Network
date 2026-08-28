@@ -11,12 +11,14 @@ class Network{
 
     private:
         std::unordered_map<int, Person*> network_;
+        //this table houses all the duplicates 
         std::unordered_map<std::string, std::vector<int>> second_table_;
         std::unordered_map<std::string, std::vector<int>> same_school_field_;
         int new_id_ = 0;
         int vec_location_ = 0;
         Person* current_person_;
         Person* friend_;
+        Friends* test;
     public:
     /** BASIC FUNCTIONS **/
 
