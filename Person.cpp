@@ -1,5 +1,6 @@
 #include "Person.hpp"
 
+
 Person::Person(){}
 
 Person::Person(int id, std::string first_name, std::string last_name, std::string school, 
@@ -188,6 +189,49 @@ bool Person::friendRemove(Person* friend_search_){
         return 1;
     }
     return 0;
+}
+
+/**
+ * @brief function allows the user to accept and decline friend request
+ * 
+ * @return true or false based on if we were able to complete the operation
+ * from the users input
+ */
+int Person::pendingFriendRequest(){
+    if(pending_friend_requests_.empty()){
+        std::cout << "\n" << first_name_ << " " << last_name_ << ", doesn't have any pending friend request.";  
+        return 1;
+    }
+    //list all the pending friend request that said person has
+    listPendingFriendRequest();
+
+    std::string answer_;
+    std::cout << "\nWould you like to add or decline anybodys friend request?\nYes or No:";
+    std::cin >> answer_;
+
+    answer_ = lower(answer_);
+
+    if(answer_ == "yes"){
+        std::cout << "\nWould you like to add or decline anybodys friend request?\nAdd or Decline:";
+        std::cin >> answer_;
+        answer_ = lower(answer_);
+        if(answer_ == "add"){
+
+        }else if(answer_ == "decline"){
+
+        }
+    }else {
+        return 2;
+    }
+    return 0;
+
+}
+void Person::listPendingFriendRequest(){
+    //goes through everybody in their pending frriends list and list all of them 
+    int each_pending_ = 1;
+    for(const auto& pending_ : pending_friend_requests_){
+        std::cout << "\n" << each_pending_ << " " << pending_.second->getFirstName();
+    }
 }
 /**
  * @brief function cout the entire friends list for a person

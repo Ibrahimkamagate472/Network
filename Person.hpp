@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 
+
 #ifndef PERSON_H
 #define PERSON_H
 class Person{
@@ -137,14 +138,28 @@ class Person{
          * 
          * @param pointeer to a Person that is going to be removed from the friends list
          * 
-         * @return ture or false if the task was completed
+         * @return true or false if the task was completed
         */
         bool friendRemove(Person* friend_);
+        
+        /**
+         * @brief function allows the user to accept and decline friend request
+         * 
+         * @return based on if the list was empty, able the do the operattion asked,
+         * or if we failed the operation
+         */
+        int pendingFriendRequest();
 
+        /**
+         * 
+         */
+        void listPendingFriendRequest();
         /**
          * @brief function cout the entire friends list for a person
          */
         void friendsList();
 
+
 };
 #endif
+#include "StringConvert.cpp"

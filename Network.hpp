@@ -18,7 +18,6 @@ class Network{
         int vec_location_ = 0;
         Person* current_person_;
         Person* friend_;
-        Friends* test;
     public:
     /** BASIC FUNCTIONS **/
 

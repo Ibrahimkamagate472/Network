@@ -94,7 +94,7 @@ void Network::size(){
  */
 bool Network::addPerson(std::string first_name_, std::string last_name_, std::string school_, std::string field_){
     idMaker();
-    Person* new_person_ = new Person (new_id_, first_name_,last_name_, school_, field_, {});
+    Person* new_person_ = new Person (new_id_, first_name_,last_name_, school_, field_, {}, {});
     
     // store person in main network table
     network_[new_person_->getId()] = new_person_;
