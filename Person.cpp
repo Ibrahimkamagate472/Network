@@ -198,6 +198,7 @@ bool Person::friendRemove(Person* friend_search_){
  * from the users input
  */
 int Person::pendingFriendRequest(){
+    //make sure list isn't empty
     if(pending_friend_requests_.empty()){
         std::cout << "\n" << first_name_ << " " << last_name_ << ", doesn't have any pending friend request.";  
         return 1;
@@ -205,25 +206,47 @@ int Person::pendingFriendRequest(){
     //list all the pending friend request that said person has
     listPendingFriendRequest();
 
+    //gets the operation the person wants to do
     std::string answer_;
-    std::cout << "\nWould you like to add or decline anybodys friend request?\nYes or No:";
+    std::cout << "\nWould you like to add, decline or do nothing?\n'add', 'decline', or 'nothing':";
     std::cin >> answer_;
 
     answer_ = lower(answer_);
 
-    if(answer_ == "yes"){
-        std::cout << "\nWould you like to add or decline anybodys friend request?\nAdd or Decline:";
+    //keep user a loop until we get the answer needed
+    while(answer_ != "add" || answer_ == "decline" || answer_ == "nothing"){
+        std::cout << "\nThat was an invalid input.\nWould you like to add, decline or do nothing?\n'add', 'decline', or 'nothing':";
         std::cin >> answer_;
         answer_ = lower(answer_);
-        if(answer_ == "add"){
+    }
 
-        }else if(answer_ == "decline"){
-
+    //start doing the operation the use wants
+    if(answer_ == "nothing"){
+        return 1;
+    }else{
+        int num_pending_person;
+        listPendingFriendRequest();
+        std::cout << "\nWhat person would you like to " << answer_ << "\nPlease input the number to the corresponding person";
+        std::cin >> num_pending_person;
+        if(num_pending_person > pending_friend_requests_.size() || num_pending_person < pending_friend_requests_.size()){
+            std::cout << "\nInvalid input, please input the number to the corresponding person" << answer_;
+            std::cin >> num_pending_person;
         }
-    }else {
-        return 2;
+        editPendingFriendRequest(num_pending_person, answer_);
     }
     return 0;
+}
+
+/**
+ * @brief function either accept the friend request or deletes it
+ * 
+ * @param int to the friend request person we are doing said 
+ * operation to 
+ * @param string what kind of operation that we are doing
+ * 
+ * @return boolean based on if the operation was compeleted
+ */
+void Person::editPendingFriendRequest(int& pending_, const std::string& operation_){
 
 }
 void Person::listPendingFriendRequest(){
@@ -231,6 +254,7 @@ void Person::listPendingFriendRequest(){
     int each_pending_ = 1;
     for(const auto& pending_ : pending_friend_requests_){
         std::cout << "\n" << each_pending_ << " " << pending_.second->getFirstName();
+        each_pending_++;
     }
 }
 /**

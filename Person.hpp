@@ -154,6 +154,18 @@ class Person{
          * 
          */
         void listPendingFriendRequest();
+
+        /**
+         * @brief function either accept the friend request or deletes it
+         * 
+         * @param int to the friend request person we are doing said 
+         * operation to 
+         * @param string what kind of operation that we are doing
+         * 
+         * @return boolean based on if the operation was compeleted
+         */
+        void editPendingFriendRequest(int& pending_, const std::string& operation_);
+
         /**
          * @brief function cout the entire friends list for a person
          */
