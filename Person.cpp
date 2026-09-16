@@ -228,11 +228,25 @@ int Person::pendingFriendRequest(){
         listPendingFriendRequest();
         std::cout << "\nWhat person would you like to " << answer_ << "\nPlease input the number to the corresponding person";
         std::cin >> num_pending_person;
-        if(num_pending_person > pending_friend_requests_.size() || num_pending_person < pending_friend_requests_.size()){
+        if(num_pending_person > pending_friend_requests_.size() || num_pending_person < 1){
             std::cout << "\nInvalid input, please input the number to the corresponding person" << answer_;
             std::cin >> num_pending_person;
         }
-        editPendingFriendRequest(num_pending_person, answer_);
+        int person_id_ = -1;
+        int i = 0;
+        for(const auto& person_ : pending_friend_requests_ ){
+            if(i == num_pending_person-1){
+                person_id_ == person_.second->getId();
+                break;
+            }
+            i++;
+        }
+        if(person_id_ != -1){
+            editPendingFriendRequest(
+                *pending_friend_requests_[person_id_],
+                answer_
+            );
+        }
     }
     return 0;
 }
@@ -246,9 +260,20 @@ int Person::pendingFriendRequest(){
  * 
  * @return boolean based on if the operation was compeleted
  */
-void Person::editPendingFriendRequest(int& pending_, const std::string& operation_){
+void Person::editPendingFriendRequest(Person& pending_person_, const std::string& operation_){
+    //if statment insert the pending person onto the current person friends list 
+    //then add the pending person onto the current person friends list
+    //lastly remove the pending person from the current person pending friends list
+    if(operation_ == "add"){
+        friends_list_.insert({pending_person_.getId(), &pending_person_});
+        pending_person_.friends_list_.insert({id_,this});
+        pending_friend_requests_.erase(pending_person_.getId());
+    }
+    //if we dont add then we decline
+    pending_friend_requests_.erase(pending_person_.getId());
 
 }
+
 void Person::listPendingFriendRequest(){
     //goes through everybody in their pending frriends list and list all of them 
     int each_pending_ = 1;
