@@ -99,8 +99,7 @@ class Network{
      * 
      * @return true or false if we were able to add the friend
      */
-    bool addFriend(const std::string& friend_first_name, const std::string& friend_last_name_, 
-        int friend_id_);
+    bool addFriend(const std::string& friend_first_name, const std::string& friend_last_name_);
 
 
     /**
@@ -115,6 +114,11 @@ class Network{
      * @param const reference to a string of the person last name we want to remove
      */
     bool removeFriend(const std::string& remove_first, const std::string& remove_last);
+
+    /**
+     * @brief fuction handles pending friends request 
+     */
+    bool pendingFriendRequest(); 
 
     /**
      * @brief function recomends a new friend for the current person

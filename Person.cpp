@@ -1,5 +1,5 @@
 #include "Person.hpp"
-
+#include "StringConvert.cpp"
 
 Person::Person(){}
 
@@ -18,6 +18,8 @@ friends_list_{friends}, pending_friend_requests_{pending_friend_requests}{}
 int Person::getId(){
     return id_;
 }
+
+
 /**
  * @brief function gets the first name of a person
  * 
@@ -176,16 +178,17 @@ int Person::friendAdd(Person* friend_){
  * 
  * @return ture or false if the task was completed
 */
-bool Person::friendRemove(Person* friend_search_){
+bool Person::friendRemove(Person* &friend_removal_){
     //checks if they have any firends
     if(friends_list_.empty()){
         return 0;
     }
     //finds the person
-    auto person_ = friends_list_.find(friend_search_->getId());
+    auto person_ = friends_list_.find(friend_removal_->getId());
 
     if(person_ != friends_list_.end()){
         friends_list_.erase(person_);
+        friend_removal_->friends_list_.erase(this->getId());
         return 1;
     }
     return 0;
@@ -222,7 +225,7 @@ int Person::pendingFriendRequest(){
 
     //start doing the operation the use wants
     if(answer_ == "nothing"){
-        return 1;
+        return 2;
     }else{
         int num_pending_person;
         listPendingFriendRequest();
@@ -236,7 +239,7 @@ int Person::pendingFriendRequest(){
         int i = 0;
         for(const auto& person_ : pending_friend_requests_ ){
             if(i == num_pending_person-1){
-                person_id_ == person_.second->getId();
+                person_id_ = person_.second->getId();
                 break;
             }
             i++;

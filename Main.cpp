@@ -35,8 +35,11 @@ bool setPerson(int indicator_, Network& world_){
         break;
 
     case 6:
-        fragment_ = " you want a friend recommendation for: ";
+        fragment_ = " you want to see the pending friend request for: ";
         break;
+    case 7:
+    fragment_ = " you want a friend recommendation for: ";
+    break;
     default:
         break;
     }
@@ -105,12 +108,10 @@ void addFriend(Network& world_){
         std::cout << "Please enter the last name of the person you want to add: ";
         std::cin >> friend_last_;
 
-        if(world_.addFriend(friend_first_,friend_last_, -1)){
-            std::cout << "\nYou have successfully added " << friend_first_ << " " << friend_last_ <<
-            " as a friend!";
+        if(!world_.addFriend(friend_first_,friend_last_)){
+            std::cout << "\nThere was an error adding " << friend_first_ << " " << friend_last_ << ".";
             return;
         }
-        std::cout << "\nThere was an error adding " << friend_first_ << " " << friend_last_ << ".";
     }
 }
 
@@ -131,8 +132,14 @@ void listFriends(Network& world_){
     }
 }
 
-void friendRecommendation(Network& world_){
+void pendingFriends(Network& world_){
     if(setPerson(6, world_)){
+        world_.pendingFriendRequest();
+    }
+}
+
+void friendRecommendation(Network& world_){
+    if(setPerson(7, world_)){
         world_.recommendFriend();
     }
 }
@@ -148,11 +155,11 @@ int main(){
     int option_;
     std::cout << "Welcome to Network!\nOur goal is to connect the world!\n";
     std::cout << "Please enter the number that correspond with the option you want.\n" 
-    << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6. list Friends" 
-    << "\n7. Friend Recommendation\n8. List Everybody\n9. Current Size of Network\n10. Close Program\n";
+    << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6 Pending Friend Request" 
+    << "\n7. list Friends \n8. Friend Recommendation\n9. List Everybody\n10. Current Size of Network\n11. Close Program\n";
     std::cin >> option_;
 
-    while(option_ != 10){
+    while(option_ != 11){
         switch (option_)
         {
             case 1:
@@ -182,19 +189,24 @@ int main(){
 
             case 6:
             /**  LIST FRIENDS **/
-                listFriends(world_);
+                pendingFriends(world_);
                 break;
 
             case 7:
+            /**  LIST FRIENDS **/
+                listFriends(world_);
+                break;
+
+            case 8:
                 /** FRIEND RECOMMENDATION **/
                 friendRecommendation(world_);
                 break;
-            case 8:
+            case 9:
                 /** LIST EVERYBODY **/
                 listPeople(world_);
                 break;
 
-            case 9:
+            case 10:
                 /** CURRENT SIZE **/
                 world_.size();
                 break;
@@ -203,9 +215,9 @@ int main(){
                 std::cout << "That was an invalid input";
                 break;
         }
-        std::cout << "\nPlease enter the number that correspond with the option you want.\n" 
-        << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6. list Friends" 
-        << "\n7. Friend Recommendation\n8. List Everybody\n9. Current Size of Network\n10. Close Program\n";
+        std::cout << "\n\nPlease enter the number that correspond with the option you want.\n" 
+        << "1. Add Person\n2. Remove Person\n3. Change Name\n4. Add Friend\n5. Remove Friend\n6 Pending Friend Request" 
+        << "\n7. list Friends \n8. Friend Recommendation\n9. List Everybody\n10. Current Size of Network\n11. Close Program\n";
         std::cin >> option_;
     }
 }

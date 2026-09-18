@@ -136,11 +136,11 @@ class Person{
         /** 
          * @brief function removes friend from the persons friends list
          * 
-         * @param pointeer to a Person that is going to be removed from the friends list
+         * @param pointer to a Person that is going to be removed from the friends list
          * 
          * @return true or false if the task was completed
         */
-        bool friendRemove(Person* friend_);
+        bool friendRemove(Person* &friend_removal_);
         
         /**
          * @brief function allows the user to accept and decline friend request
@@ -174,4 +174,3 @@ class Person{
 
 };
 #endif
-#include "StringConvert.cpp"
