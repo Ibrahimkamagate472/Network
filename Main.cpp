@@ -220,4 +220,5 @@ int main(){
         << "\n7. list Friends \n8. Friend Recommendation\n9. List Everybody\n10. Current Size of Network\n11. Close Program\n";
         std::cin >> option_;
     }
+    
 }
