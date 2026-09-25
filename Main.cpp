@@ -127,7 +127,6 @@ void removeFriend(Network& world_){
 
 void listFriends(Network& world_){
     if(setPerson(5, world_)){
-        std::cout << first_name_ << " " << last_name_ << " friends are: ";
         world_.listFriends();
     }
 }

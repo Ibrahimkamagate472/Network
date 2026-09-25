@@ -128,6 +128,17 @@ bool Network::removePerson(){
     }
     return 0;
 }
+/**
+ * @brief function handle after the removal of a person from the network
+ * once a person has been deleted we want to remove said person from 
+ * everybodys friends list and pending friend request
+ */
+void Network::personRemovalHandler(){
+
+    for(auto& temp_person_ : network_){
+ 
+    }
+}
 
 /** 
  * @brief function changes a person names 
@@ -219,7 +230,7 @@ void Network::listFriends(){
 /**
  * @brief fuction handles pending friends request 
  */
-bool Network::pendingFriendRequest(){
+void Network::pendingFriendRequest(){
     current_person_->pendingFriendRequest();
 }
 

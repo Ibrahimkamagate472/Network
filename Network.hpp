@@ -72,6 +72,13 @@ class Network{
      * @return true or false 
      */
     bool removePerson();
+    
+    /**
+     * @brief function handle after the removal of a person from the network
+     * once a person has been deleted we want to remove said person from 
+     * everybodys friends list and pending friend request
+     */
+     void personRemovalHandler();
 
     /** 
      * @brief function changes a person names 
@@ -118,7 +125,7 @@ class Network{
     /**
      * @brief fuction handles pending friends request 
      */
-    bool pendingFriendRequest(); 
+    void pendingFriendRequest(); 
 
     /**
      * @brief function recomends a new friend for the current person

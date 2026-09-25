@@ -211,7 +211,7 @@ int Person::pendingFriendRequest(){
 
     //gets the operation the person wants to do
     std::string answer_;
-    std::cout << "\nWould you like to add, decline or do nothing?\n'add', 'decline', or 'nothing':";
+    std::cout << "\nWould you like to add, decline or do nothing?\n'add', 'decline', or 'nothing': ";
     std::cin >> answer_;
 
     answer_ = lower(answer_);
@@ -229,10 +229,11 @@ int Person::pendingFriendRequest(){
     }else{
         int num_pending_person;
         listPendingFriendRequest();
-        std::cout << "\nWhat person would you like to " << answer_ << "\nPlease input the number to the corresponding person";
+        std::cout << "\nWhat person would you like to " << answer_ << "\nPlease input the number to the corresponding person: ";
         std::cin >> num_pending_person;
-        if(num_pending_person > pending_friend_requests_.size() || num_pending_person < 1){
-            std::cout << "\nInvalid input, please input the number to the corresponding person" << answer_;
+        int friend_request_length_ = pending_friend_requests_.size();
+        if(num_pending_person > friend_request_length_ || num_pending_person < 1){
+            std::cout << "\nInvalid input, please input the number to the corresponding person: ";
             std::cin >> num_pending_person;
         }
         int person_id_ = -1;
@@ -245,10 +246,7 @@ int Person::pendingFriendRequest(){
             i++;
         }
         if(person_id_ != -1){
-            editPendingFriendRequest(
-                *pending_friend_requests_[person_id_],
-                answer_
-            );
+            editPendingFriendRequest(*pending_friend_requests_[person_id_],answer_);
         }
     }
     return 0;
@@ -263,7 +261,7 @@ int Person::pendingFriendRequest(){
  * 
  * @return boolean based on if the operation was compeleted
  */
-void Person::editPendingFriendRequest(Person& pending_person_, const std::string& operation_){
+bool Person::editPendingFriendRequest(Person& pending_person_, const std::string& operation_){
     //if statment insert the pending person onto the current person friends list 
     //then add the pending person onto the current person friends list
     //lastly remove the pending person from the current person pending friends list
@@ -271,17 +269,26 @@ void Person::editPendingFriendRequest(Person& pending_person_, const std::string
         friends_list_.insert({pending_person_.getId(), &pending_person_});
         pending_person_.friends_list_.insert({id_,this});
         pending_friend_requests_.erase(pending_person_.getId());
+        std::cout << "\nYou have successfully added " << pending_person_.getFullName() 
+        << " as a friend for " << this->getFullName() << ".";
+        return 1;
     }
     //if we dont add then we decline
-    pending_friend_requests_.erase(pending_person_.getId());
+    if(pending_friend_requests_.erase(pending_person_.getId())){
+        std::cout << "\nYou have successfully removed " << pending_person_.getFullName() 
+        << " from " << this->getFullName() << " pending friend request.";
+        return 1;
+    }
+    return 0;
 
 }
 
 void Person::listPendingFriendRequest(){
     //goes through everybody in their pending frriends list and list all of them 
+    std::cout << "\nThe pending friend request for " << this->getFullName() << " are :";
     int each_pending_ = 1;
     for(const auto& pending_ : pending_friend_requests_){
-        std::cout << "\n" << each_pending_ << " " << pending_.second->getFirstName();
+        std::cout << "\n" << each_pending_ << ". " << pending_.second->getFullName();
         each_pending_++;
     }
 }
@@ -291,10 +298,10 @@ void Person::listPendingFriendRequest(){
 void Person::friendsList(){
     //checks if the have any friends 
     if(friends_list_.empty()){
-        std::cout << "\nThis person has no friends";
+        std::cout << "\n" << this->getFullName() <<" has no friends";
         return;
     }
-
+    std::cout << "\n" << this->getFullName() <<" friends are: ";
     std::vector<std::string> names_;
     //loops through all the friends and add to a vector 
     for(const auto& person_: friends_list_){
