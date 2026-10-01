@@ -217,7 +217,7 @@ int Person::pendingFriendRequest(){
     answer_ = lower(answer_);
 
     //keep user a loop until we get the answer needed
-    while(answer_ != "add" || answer_ == "decline" || answer_ == "nothing"){
+    while(answer_ != "add" && answer_ != "decline" && answer_ != "nothing"){
         std::cout << "\nThat was an invalid input.\nWould you like to add, decline or do nothing?\n'add', 'decline', or 'nothing':";
         std::cin >> answer_;
         answer_ = lower(answer_);
@@ -246,7 +246,7 @@ int Person::pendingFriendRequest(){
             i++;
         }
         if(person_id_ != -1){
-            editPendingFriendRequest(*pending_friend_requests_[person_id_],answer_);
+            editPendingFriendRequest(pending_friend_requests_[person_id_],answer_);
         }
     }
     return 0;
@@ -261,21 +261,21 @@ int Person::pendingFriendRequest(){
  * 
  * @return boolean based on if the operation was compeleted
  */
-bool Person::editPendingFriendRequest(Person& pending_person_, const std::string& operation_){
+bool Person::editPendingFriendRequest(Person* &pending_person_, const std::string& operation_){
     //if statment insert the pending person onto the current person friends list 
     //then add the pending person onto the current person friends list
     //lastly remove the pending person from the current person pending friends list
     if(operation_ == "add"){
-        friends_list_.insert({pending_person_.getId(), &pending_person_});
-        pending_person_.friends_list_.insert({id_,this});
-        pending_friend_requests_.erase(pending_person_.getId());
-        std::cout << "\nYou have successfully added " << pending_person_.getFullName() 
+        friends_list_.insert({pending_person_->getId(), pending_person_});
+        pending_person_->friends_list_.insert({id_,this});
+        pending_friend_requests_.erase(pending_person_->getId());
+        std::cout << "\nYou have successfully added " << pending_person_->getFullName() 
         << " as a friend for " << this->getFullName() << ".";
         return 1;
     }
     //if we dont add then we decline
-    if(pending_friend_requests_.erase(pending_person_.getId())){
-        std::cout << "\nYou have successfully removed " << pending_person_.getFullName() 
+    if(pending_friend_requests_.erase(pending_person_->getId())){
+        std::cout << "\nYou have successfully removed " << pending_person_->getFullName() 
         << " from " << this->getFullName() << " pending friend request.";
         return 1;
     }
@@ -313,4 +313,11 @@ void Person::friendsList(){
     for(const auto& person_ : names_){
         std::cout << std::endl << person_ << std::endl;
     }
+}
+
+bool Person::findFriend(){
+    return 1;
+}
+bool Person:: findPendingFriend(){
+    return 1;
 }

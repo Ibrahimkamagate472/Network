@@ -114,19 +114,20 @@ bool Network::addPerson(std::string first_name_, std::string last_name_, std::st
 bool Network::removePerson(){
     std::string temp_name_ = current_person_->getFullName();
 
-    //delete them from the network
-    if(network_.erase(current_person_->getId())){
-       auto& location_ =  second_table_[temp_name_];
+    //delete them from the network and frrom all friends list and pending friends list
+    personRemovalHandler();
+    network_.erase(current_person_->getId());
+    auto& location_ =  second_table_[temp_name_];
+    
 
-       //checks the size of people with the same name to determine how to delete
-       if(location_.size() > 1){
-            location_.erase(location_.begin()+ vec_location_);
-       }else if(location_.size() == 1 || location_.empty()){
-            second_table_.erase(temp_name_);
-       }
-       return 1;
+    //checks the size of people with the same name to determine how to delete
+    if(location_.size() > 1){
+        location_.erase(location_.begin()+ vec_location_);
+    }else if(location_.size() == 1 || location_.empty()){
+        second_table_.erase(temp_name_);
     }
-    return 0;
+    return 1;
+  
 }
 /**
  * @brief function handle after the removal of a person from the network
@@ -136,7 +137,12 @@ bool Network::removePerson(){
 void Network::personRemovalHandler(){
 
     for(auto& temp_person_ : network_){
- 
+        if(temp_person_.second->findFriend()){
+            temp_person_.second->friendRemove(current_person_);
+        }
+        if(temp_person_.second->findPendingFriend()){
+            temp_person_.second->editPendingFriendRequest(current_person_, "decline");
+        }
     }
 }
 
@@ -180,7 +186,11 @@ void Network::idMaker(){
 bool Network::addFriend(const std::string& friend_first_name, const std::string& friend_last_name_){
 
     friend_ = lookUp(friend_first_name, friend_last_name_);
-    if(friend_ != nullptr){
+    if(friend_ == current_person_){
+        std::cout << "\nYou can't send a friend request to yourself  ";
+        return 0;
+    }
+    if(friend_ != nullptr ){
         int result_ = current_person_->friendAdd(friend_);
         switch (result_){
         case 1:

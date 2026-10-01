@@ -164,12 +164,15 @@ class Person{
          * 
          * @return boolean based on if the operation was compeleted
          */
-        bool editPendingFriendRequest(Person& pending_, const std::string& operation_);
+        bool editPendingFriendRequest(Person* &pending_, const std::string& operation_);
 
         /**
          * @brief function cout the entire friends list for a person
          */
         void friendsList();
+
+        bool findFriend();
+        bool findPendingFriend();
 
 
 };
