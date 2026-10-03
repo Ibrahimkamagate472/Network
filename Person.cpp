@@ -75,6 +75,15 @@ std::string Person::getField(){
     return field_;
 }
 
+/**
+ * @brief function returns the size of a person friends list
+ * 
+ * @return int to the size of the list
+ */
+int Person::friendsListSize(){
+    return friends_list_.size();
+}
+
 /** SETTERS **/
 
 /**
@@ -132,7 +141,7 @@ bool Person::changeFirstName(const std::string& first_){
 /**
  * @brief function changes the first name of a person
  * 
- * @param const referent to a string of the new last name
+ * @param const reference to a string of the new last name
  * 
  * @return true or false if done
  */
@@ -147,12 +156,12 @@ bool Person::changeLastName(const std::string& last_){
 /** 
  * @brief function adds a friend for a person
  * 
- * @param pointer to a Person that is going to be added to the friends list 
+ * @param pointer reference to a Person that is going to be added to the friends list 
  * 
  * @return true or false if task was completed
  * 
  */
-int Person::friendAdd(Person* friend_){
+int Person::friendAdd(Person* &friend_){
     //means that they are already friends
     if(friends_list_.find(friend_->id_) != friends_list_.end()){
         return 1;
@@ -174,7 +183,7 @@ int Person::friendAdd(Person* friend_){
 /** 
  * @brief function removes friend from the persons friends list
  * 
- * @param pointer to a Person that is going to be removed from the friends list
+ * @param pointer reference to a Person that is going to be removed from the friends list
  * 
  * @return ture or false if the task was completed
 */
@@ -197,8 +206,8 @@ bool Person::friendRemove(Person* &friend_removal_){
 /**
  * @brief function allows the user to accept and decline friend request
  * 
- * @return true or false based on if we were able to complete the operation
- * from the users input
+* @return based on if the list was empty, able the do the operattion asked,
+* or if we failed the operation
  */
 int Person::pendingFriendRequest(){
     //make sure list isn't empty
@@ -253,11 +262,23 @@ int Person::pendingFriendRequest(){
 }
 
 /**
+ * @brief function list all the people in persons pending friend   
+ * request list 
+ */
+void Person::listPendingFriendRequest(){
+    //goes through everybody in their pending frriends list and list all of them 
+    std::cout << "\nThe pending friend request for " << this->getFullName() << " are :";
+    int each_pending_ = 1;
+    for(const auto& pending_ : pending_friend_requests_){
+        std::cout << "\n" << each_pending_ << ". " << pending_.second->getFullName();
+        each_pending_++;
+    }
+}
+
+/**
  * @brief function either accept the friend request or deletes it
  * 
- * @param int to the friend request person we are doing said 
- * operation to 
- * @param string what kind of operation that we are doing
+ * @param pointer reference to the pending person
  * 
  * @return boolean based on if the operation was compeleted
  */
@@ -283,15 +304,50 @@ bool Person::editPendingFriendRequest(Person* &pending_person_, const std::strin
 
 }
 
-void Person::listPendingFriendRequest(){
-    //goes through everybody in their pending frriends list and list all of them 
-    std::cout << "\nThe pending friend request for " << this->getFullName() << " are :";
-    int each_pending_ = 1;
-    for(const auto& pending_ : pending_friend_requests_){
-        std::cout << "\n" << each_pending_ << ". " << pending_.second->getFullName();
-        each_pending_++;
+/**
+ * @brief function checks if the being delete from the network
+ * is in this person friends list
+ * 
+ * @param pointer reference the person being deleted 
+ * 
+ * @return boolean based on if the person was in the list 
+ */
+bool Person::findFriend(Person* &person_being_deleted){
+    auto temp = friends_list_.find(person_being_deleted->id_);
+    if(temp != friends_list_.end()){
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @brief function checks if the being delete from the network
+ * is in this person pending friends list 
+ * 
+ * @param pointer reference the person being deleted 
+ * 
+ * @return boolean based on if the person was in the list 
+ */
+bool Person:: findPendingFriend(Person* &person_being_deleted){
+    auto temp = pending_friend_requests_.find(person_being_deleted->id_);
+    if(temp != pending_friend_requests_.end()){
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @brief function gives recommendation for friend to add
+ */
+void Person::friendRecommendation(){
+    /*
+    if the person has no friends the we recommend 
+    them to add people from their school
+    */
+    if(friends_list_.empty()){
     }
 }
+
 /**
  * @brief function cout the entire friends list for a person
  */
@@ -313,11 +369,4 @@ void Person::friendsList(){
     for(const auto& person_ : names_){
         std::cout << std::endl << person_ << std::endl;
     }
-}
-
-bool Person::findFriend(){
-    return 1;
-}
-bool Person:: findPendingFriend(){
-    return 1;
 }

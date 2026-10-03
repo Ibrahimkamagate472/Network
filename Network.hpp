@@ -128,6 +128,15 @@ class Network{
     void pendingFriendRequest(); 
 
     /**
+     * @brief function gives recommendation for friend to add
+     */
+    void friendRecommendation();
+
+    /**
+     * @brief function gives recommendations based on the same school
+     */
+    void friendsFromSchoolRecommendation();
+    /**
      * @brief function recomends a new friend for the current person
      */
     void recommendFriend();

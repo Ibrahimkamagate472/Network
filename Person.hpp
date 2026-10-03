@@ -21,6 +21,7 @@ class Person{
             std::string field, std::unordered_map<int, Person*> friends, std::unordered_map<int, Person*> pending_friend_requests) ;
         
         /** GETTERS **/
+
         /**
          * @brief function gets the id of a person
          * 
@@ -69,6 +70,13 @@ class Person{
          */
         std::string getField();
 
+        /**
+         * @brief function returns the size of a person friends list
+         * 
+         * @return int to the size of the list
+         */
+        int friendsListSize();
+
         /** SETTERS **/
 
         /**
@@ -106,7 +114,7 @@ class Person{
         /**
          * @brief function changes the first name of a person
          * 
-         * @param const referent to a string of the new first name
+         * @param const reference to a string of the new first name
          * 
          * @return true or false if done
          */
@@ -115,7 +123,7 @@ class Person{
         /**
          * @brief function changes the first name of a person
          * 
-         * @param const referent to a string of the new last name
+         * @param const reference to a string of the new last name
          * 
          * @return true or false if done
          */
@@ -126,17 +134,17 @@ class Person{
         /** 
          * @brief function adds a friend for a person
          * 
-         * @param pointer to a Person that is going to be added to the friends list 
+         * @param pointer reference to a Person that is going to be added to the friends list 
          * 
          * @return true or false if task was completed
          * 
          */
-        int friendAdd(Person* friend_);
+        int friendAdd(Person* &friend_);
 
         /** 
          * @brief function removes friend from the persons friends list
          * 
-         * @param pointer to a Person that is going to be removed from the friends list
+         * @param pointer reference to a Person that is going to be removed from the friends list
          * 
          * @return true or false if the task was completed
         */
@@ -151,28 +159,54 @@ class Person{
         int pendingFriendRequest();
 
         /**
-         * 
+         * @brief function list all the people in persons pending friend   
+         * request list 
          */
         void listPendingFriendRequest();
 
         /**
          * @brief function either accept the friend request or deletes it
          * 
-         * @param int to the friend request person we are doing said 
-         * operation to 
-         * @param string what kind of operation that we are doing
+         * @param pointer reference to the pending person
          * 
          * @return boolean based on if the operation was compeleted
          */
         bool editPendingFriendRequest(Person* &pending_, const std::string& operation_);
 
         /**
+         * @brief function checks if the being delete from the network
+         * is in this person pending friends list 
+         * 
+         * @param pointer reference the person being deleted 
+         * 
+         * @return boolean based on if the person was in the list 
+         */
+        bool findFriend(Person* &person_being_deleted);
+
+        /**
+         * @brief function checks if the being delete from the network
+         * is in this person pending friends list 
+         * 
+         * @param pointer reference the person being deleted 
+         * 
+         * @return boolean based on if the person was in the list 
+         */
+        bool findPendingFriend(Person* &person_being_deleted);
+
+        /**
+         * @brief function gives recommendation for friend to add
+         */
+        void friendRecommendation();
+
+        /**
+         * @brief function gives recommendations based on the same school
+         */
+        void friendsFromSchoolRecommendation();
+        /**
          * @brief function cout the entire friends list for a person
          */
         void friendsList();
 
-        bool findFriend();
-        bool findPendingFriend();
 
 
 };

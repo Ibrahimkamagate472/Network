@@ -137,10 +137,10 @@ bool Network::removePerson(){
 void Network::personRemovalHandler(){
 
     for(auto& temp_person_ : network_){
-        if(temp_person_.second->findFriend()){
+        if(temp_person_.second->findFriend(current_person_)){
             temp_person_.second->friendRemove(current_person_);
         }
-        if(temp_person_.second->findPendingFriend()){
+        if(temp_person_.second->findPendingFriend(current_person_)){
             temp_person_.second->editPendingFriendRequest(current_person_, "decline");
         }
     }
@@ -242,6 +242,36 @@ void Network::listFriends(){
  */
 void Network::pendingFriendRequest(){
     current_person_->pendingFriendRequest();
+}
+
+/**
+ * @brief function gives recommendation for friend to add
+ */
+void Network::friendRecommendation(){
+    /*
+    if the person has no friends the we recommend 
+    them to add people from their school
+    */
+    if(current_person_->friendsListSize() == 0){
+        friendsFromSchoolRecommendation();
+    }
+
+}
+
+/**
+ * @brief function gives recommendations based on the same school
+ */
+void Network::friendsFromSchoolRecommendation(){
+    int i = 1;
+    std::cout << "\nPeople we recommend for you:";
+    //find people in the same school
+    for(const auto& potential_friend_ : network_){
+        if(current_person_->getSchool() == potential_friend_.second->getSchool() && i <= 10 ){
+            std::cout << "\n" << i  << ": " << potential_friend_.second->getFullName();
+        }
+        i++;
+    } 
+
 }
 
 /**
